@@ -13,7 +13,8 @@ class filtros():
         """
         self.ruta_imagen = ruta_imagen
         self.img = cv.imread(ruta_imagen)
-        self.filas, self.columnas = self.img.shape[:2]
+        self.filas = len(self.img)
+        self.columnas = len(self.img[0])
 
     def mostrar_imagen(self):
         """
@@ -53,9 +54,9 @@ class filtros():
             for j in range(0, self.columnas):
                 pixel = self.img[i][j]
                 count = (pixel[0] + pixel[1] + pixel[2]) // 3
-                self.img[i][j][0] = count
-                self.img[i][j][1] = count
-                self.img[i][j][2] = count
+                pixel[0] = count
+                pixel[1] = count
+                pixel[2] = count
         cv.imshow("Gris v1", self.img)
         cv.waitKey()
         #return self.img
@@ -68,9 +69,9 @@ class filtros():
             for j in range(0, self.columnas):
                 pixel = self.img[i][j]
                 count = ((pixel[0] * 0.3) + (pixel[1] * 0.59) + (pixel[2] * 0.11))
-                self.img[i][j][0] = count
-                self.img[i][j][1] = count
-                self.img[i][j][2] = count
+                pixel[0] = count
+                pixel[1] = count
+                pixel[2] = count
         cv.imshow("Gris v2", self.img)
         cv.waitKey()
         #return self.img
@@ -83,9 +84,9 @@ class filtros():
             for j in range(0, self.columnas):
                 pixel = self.img[i][j]
                 count = ((pixel[0] * 0.2126) + (pixel[1] * 0.7152) + (pixel[2] * 0.0722))
-                self.img[i][j][0] = count
-                self.img[i][j][1] = count
-                self.img[i][j][2] = count
+                pixel[0] = count
+                pixel[1] = count
+                pixel[2] = count
         cv.imshow("Gris v3", self.img)
         cv.waitKey()
         #return self.img
@@ -98,9 +99,9 @@ class filtros():
             for j in range(0, self.columnas):
                 pixel = self.img[i][j]
                 count = ((pixel[0] * 0.299) + (pixel[1] * 0.587) + (pixel[2] * 0.114))
-                self.img[i][j][0] = count
-                self.img[i][j][1] = count
-                self.img[i][j][2] = count
+                pixel[0] = count
+                pixel[1] = count
+                pixel[2] = count
         cv.imshow("Gris v4", self.img)
         cv.waitKey()
         #return self.img
@@ -113,9 +114,9 @@ class filtros():
             for j in range(0, self.columnas):
                 pixel = self.img[i][j]
                 count = ((max([pixel[0], pixel[1], pixel[2]])) + (min([pixel[0], pixel[1], pixel[2]]))) / 2
-                self.img[i][j][0] = count
-                self.img[i][j][1] = count
-                self.img[i][j][2] = count
+                pixel[0] = count
+                pixel[1] = count
+                pixel[2] = count
         cv.imshow("Gris v5", self.img)
         cv.waitKey()
         #return self.img
@@ -128,9 +129,9 @@ class filtros():
             for j in range(0, self.columnas):
                 pixel = self.img[i][j]
                 count = max([pixel[0], pixel[1], pixel[2]])
-                self.img[i][j][0] = count
-                self.img[i][j][1] = count
-                self.img[i][j][2] = count
+                pixel[0] = count
+                pixel[1] = count
+                pixel[2] = count
         cv.imshow("Gris v6", self.img)
         cv.waitKey()
         #return self.img
@@ -143,9 +144,9 @@ class filtros():
             for j in range(0, self.columnas):
                 pixel = self.img[i][j]
                 count = min([pixel[0], pixel[1], pixel[2]])
-                self.img[i][j][0] = count
-                self.img[i][j][1] = count
-                self.img[i][j][2] = count
+                pixel[0] = count
+                pixel[1] = count
+                pixel[2] = count
         cv.imshow("Gris v7", self.img)
         cv.waitKey()
         #return self.img
@@ -168,8 +169,9 @@ class filtros():
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
-                self.img[i][j][1] = 0
-                self.img[i][j][2] = 0
+                pixel = self.img[i][j]
+                pixel[1] = 0
+                pixel[2] = 0
         cv.imshow("Azul", self.img)
         cv.waitKey()
         #return self.img
@@ -180,8 +182,9 @@ class filtros():
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
-                self.img[i][j][0] = 0
-                self.img[i][j][1] = 0
+                pixel = self.img[i][j]
+                pixel[0] = 0
+                pixel[1] = 0
         cv.imshow("Rojo", self.img)
         cv.waitKey()
         #return self.img
@@ -192,9 +195,45 @@ class filtros():
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
-                self.img[i][j][0] = 0
-                self.img[i][j][2] = 0
+                pixel = self.img[i][j]
+                pixel[0] = 0
+                pixel[2] = 0
         cv.imshow("Verde", self.img)
+        cv.waitKey()
+        #return self.img
+
+##### EJERCICIO 3 #####
+
+
+##### EJERCICIO 4 #####
+
+    def inverso(self):
+        for i in range(0, self.filas):
+            for j in range(0, self.columnas):
+                pixel = self.img[i][j]
+                num_pixel = (pixel[0] * 255) + (pixel[1] * 16) + (pixel[2])
+                if (pixel > 8000000):
+                    pixel[0] = 0
+                    pixel[1] = 0
+                    pixel[2] = 0
+                else:
+                    pixel[0] = 255
+                    pixel[1] = 255
+                    pixel[2] = 255
+        cv.imshow("Inverso", self.img)
+        cv.waitKey()
+        #return self.img
+
+##### EJERCICIO 5 #####
+
+    def brillo(self):
+        for i in range(0, self.filas):
+            for j in range(0, self.columnas):
+                pixel = self.img[i][j]
+                pixel[0] += 25
+                pixel[1] += 25
+                pixel[2] += 25
+        cv.imshow("Brillo", self.img)
         cv.waitKey()
         #return self.img
 
@@ -205,4 +244,4 @@ class filtros():
 
 cp = "image.jpg"
 im = filtros(cp)
-im.rojo_verde_azul(2)
+im.inverso()
