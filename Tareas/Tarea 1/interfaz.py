@@ -48,7 +48,7 @@ def detec_gris():
     global path_image
     global fil
 
-    #fil = filtros(path_image)
+    fil = filtros(path_image)
     img = fil.obtener_imagen()
 
     imagen = fil.gris(img, 3)
@@ -67,10 +67,10 @@ def detec_rojo():
     global path_image
     global fil
 
-    #fil = filtros(path_image)
+    fil = filtros(path_image)
     img = fil.obtener_imagen()
 
-    imagen = fil.rojo(img)
+    imagen = fil.azul(img)
     imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
     #imageToShowOutput = imagen
     im = Image.fromarray(imagen)
@@ -86,7 +86,7 @@ def detec_verde():
     global path_image
     global fil
 
-    #fil = filtros(path_image)
+    fil = filtros(path_image)
     img = fil.obtener_imagen()
 
     imagen = fil.verde(img)
@@ -105,10 +105,10 @@ def detec_azul():
     global path_image
     global fil
 
-    #fil = filtros(path_image)
+    fil = filtros(path_image)
     img = fil.obtener_imagen()
 
-    imagen = fil.azul(img)
+    imagen = fil.rojo(img)
     imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
     #imageToShowOutput = imagen
     im = Image.fromarray(imagen)
@@ -124,7 +124,7 @@ def detec_contraste():
     global path_image
     global fil
 
-    #fil = filtros(path_image)
+    fil = filtros(path_image)
     img = fil.obtener_imagen()
 
     imagen = fil.alto_contraste(img)
@@ -143,7 +143,7 @@ def detec_inverso():
     global path_image
     global fil
 
-    #fil = filtros(path_image)
+    fil = filtros(path_image)
     img = fil.obtener_imagen()
 
     imagen = fil.inverso(img)
@@ -162,7 +162,7 @@ def detec_brillo():
     global path_image
     global fil
 
-    #fil = filtros(path_image)
+    fil = filtros(path_image)
     img = fil.obtener_imagen()
 
     imagen = fil.brillo(img)
@@ -198,7 +198,9 @@ lblInfo2 = Label(root, text= "¿Que filtro deseas probar?")
 lblInfo2.grid(column=0, row=3, padx=5, pady=5)
 
 # botones de filtros
-fil_btn_1 = Button(root, text= "Gris", width=25, command=detec_gris)
+label_gris = Label(root, text="Version de escala de grises")
+input_gris = Entry(root)
+fil_btn_1 = Button(root, text= "Gris", width=25, command=detec_gris())
 fil_btn_2 = Button(root, text= "Rojo", width=25, command=detec_rojo)
 fil_btn_3 = Button(root, text= "Verde", width=25, command=detec_verde)
 fil_btn_4 = Button(root, text= "Azul", width=25, command=detec_azul)
@@ -206,14 +208,16 @@ fil_btn_5 = Button(root, text= "Mosaico", width=25)
 fil_btn_6 = Button(root, text= "Contraste", width=25, command=detec_contraste)
 fil_btn_7 = Button(root, text= "Inverso", width=25, command=detec_inverso)
 fil_btn_8 = Button(root, text= "Brillo", width=25, command=detec_brillo)
-fil_btn_1.grid(column=0, row=4, padx=5,pady=5)
-fil_btn_2.grid(column=0, row=5, padx=5,pady=5)
-fil_btn_3.grid(column=0, row=6, padx=5,pady=5)
-fil_btn_4.grid(column=0, row=7, padx=5,pady=5)
-fil_btn_5.grid(column=0, row=8, padx=5,pady=5)
-fil_btn_6.grid(column=0, row=9, padx=5,pady=5)
-fil_btn_7.grid(column=0, row=10, padx=5,pady=5)
-fil_btn_8.grid(column=0, row=11, padx=5,pady=5)
+label_gris.grid(column=0, row=4, padx=5,pady=5)
+input_gris.grid(column=0, row=5, padx=5,pady=5)
+fil_btn_1.grid(column=0, row=6, padx=5,pady=5)
+fil_btn_2.grid(column=0, row=7, padx=5,pady=5)
+fil_btn_3.grid(column=0, row=8, padx=5,pady=5)
+fil_btn_4.grid(column=0, row=9, padx=5,pady=5)
+fil_btn_5.grid(column=0, row=10, padx=5,pady=5)
+fil_btn_6.grid(column=0, row=11, padx=5,pady=5)
+fil_btn_7.grid(column=0, row=12, padx=5,pady=5)
+fil_btn_8.grid(column=0, row=13, padx=5,pady=5)
 
 # boton para elegir la imagen
 btn = Button(root, text="Elegir imagen", width=25, command=elegir_imagen)

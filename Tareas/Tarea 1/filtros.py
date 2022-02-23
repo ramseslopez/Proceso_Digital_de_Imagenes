@@ -35,19 +35,19 @@ class filtros():
         version - version del filtro
         """
         if version == 1:
-            self.gris_v1(img)
+            return self.gris_v1(img)
         elif version == 2:
-            self.gris_v2(img)
+            return self.gris_v2(img)
         elif version == 3:
-            self.gris_v3(img)
+            return self.gris_v3(img)
         elif version == 4:
-            self.gris_v4(img)
+            return self.gris_v4(img)
         elif version == 5:
-            self.gris_v5(img)
+            return self.gris_v5(img)
         elif version == 6:
-            self.gris_v6(img)
+            return self.gris_v6(img)
         elif version == 7:
-            self.gris_v7(img)
+            return self.gris_v7(img)
         else:
             print("Numero no valido")
             exit(0)
@@ -389,15 +389,15 @@ class filtros():
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
                 pixel = img[i][j]
-                num_pixel = (pixel[0] << 16) + (pixel[1] << 8) + pixel[2]
+                num_pixel = (pixel[2] << 16) + (pixel[1] << 8) + pixel[0]
                 if (num_pixel < 8000000):
-                    pixel[0] = 255
-                    pixel[1] = 255
-                    pixel[2] = 255
-                else:
                     pixel[0] = 0
                     pixel[1] = 0
                     pixel[2] = 0
+                else:
+                    pixel[0] = 255
+                    pixel[1] = 255
+                    pixel[2] = 255
         return img
 
     def inverso(self, img):
@@ -445,9 +445,9 @@ class filtros():
         return img
 
 
-#cp = "image.jpg"
+#cp = "image3.png"
 #im = filtros(cp)
 #img = im.obtener_imagen()
-#a = im.mosaico2(img, 5, 5)
+#a = im.gris(img, 3)
 #cv.imshow("result", a)
 #cv.waitKey()
