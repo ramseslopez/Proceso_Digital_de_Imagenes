@@ -445,9 +445,9 @@ class filtros():
         return img
 
 
-#cp = "image3.png"
+#cp = "image.jpg"
 #im = filtros(cp)
 #img = im.obtener_imagen()
-#a = im.gris(img, 3)
+#a = im.brillo(img)
 #cv.imshow("result", a)
 #cv.waitKey()
