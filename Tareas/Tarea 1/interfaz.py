@@ -90,7 +90,7 @@ def detec_gris():
 def nueva_ventana():
     global selected
     new_w = Toplevel(root)
-    labelExample = Label(new_w, text = "New Window")
+    #labelExample = Label(new_w, text = "New Window")
 
     selected = IntVar()
     rad1 = Radiobutton(new_w, text='Gris v1', width=25,value=1, variable=selected, command=detec_gris)
@@ -211,7 +211,7 @@ def detec_brillo():
     fil = filtros(path_image)
     img = fil.obtener_imagen()
 
-    imagen = fil.brillo(img)
+    imagen = fil.brillo(img, scale1.get())
     imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
     #imageToShowOutput = imagen
     im = Image.fromarray(imageToShowOutput)
@@ -220,7 +220,27 @@ def detec_brillo():
     lblOutputImage.image = img
 
     lblInfo3 = Label(root, text = "Modificada")
-    lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+
+
+def barra_brillo():
+    global image
+    global path_image
+    global fil
+    global scale1
+
+    b_window = Toplevel(root)
+
+    scale1 = Scale(b_window, from_=-255, to=255, orient=HORIZONTAL, tickinterval=1, length=500)
+
+    scale1.pack()
+    scale1.set (0)
+
+    btn_brillo= Button(b_window, text="Aplicar", command=detec_brillo)
+    btn_brillo.pack()
+
+def showNum():
+    print(scale1.get())
+
 
 
 
@@ -251,7 +271,7 @@ fil_btn_4 = Button(root, text= "Azul", width=25, command=detec_azul)
 fil_btn_5 = Button(root, text= "Mosaico", width=25)
 fil_btn_6 = Button(root, text= "Contraste", width=25, command=detec_contraste)
 fil_btn_7 = Button(root, text= "Inverso", width=25, command=detec_inverso)
-fil_btn_8 = Button(root, text= "Brillo", width=25, command=detec_brillo)
+fil_btn_8 = Button(root, text= "Brillo", width=25, command=barra_brillo)
 
 fil_btn_1.grid(column=0, row=4, padx=5,pady=5)
 fil_btn_2.grid(column=0, row=5, padx=5,pady=5)
