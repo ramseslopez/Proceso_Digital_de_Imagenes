@@ -54,6 +54,12 @@ class filtros():
             return self.gris_v6(img)
         elif version == 7:
             return self.gris_v7(img)
+        elif version == 8:
+            return self.gris_v8(img)
+        elif version == 9:
+            return self.gris_v9(img)
+        elif version == 10:
+            return self.gris_v10(img)
         else:
             print("Numero no valido")
             exit(0)
@@ -174,7 +180,7 @@ class filtros():
 
     def gris_v7(self, img):
         """
-        Aplica una sexta version un filtro gris a la imagen
+        Aplica una septima version un filtro gris a la imagen
 
         Params
         img - imagen
@@ -189,6 +195,60 @@ class filtros():
                 pixel[0] = count
                 pixel[1] = count
                 pixel[2] = count
+        return img
+
+    def gris_v8(self, img):
+        """
+        Aplica una octava version un filtro gris a la imagen
+
+        Params
+        img - imagen
+
+        Returns
+        img - imagen con filtro
+        """
+        for i in range(0, self.filas):
+            for j in range(0, self.columnas):
+                pixel = img[i][j]
+                pixel[0] = pixel[2]
+                pixel[1] = pixel[2]
+                pixel[2] = pixel[2]
+        return img
+
+    def gris_v9(self, img):
+        """
+        Aplica una novena version un filtro gris a la imagen
+
+        Params
+        img - imagen
+
+        Returns
+        img - imagen con filtro
+        """
+        for i in range(0, self.filas):
+            for j in range(0, self.columnas):
+                pixel = img[i][j]
+                pixel[0] = pixel[1]
+                pixel[1] = pixel[1]
+                pixel[2] = pixel[1]
+        return img
+
+    def gris_v10(self, img):
+        """
+        Aplica una decima version un filtro gris a la imagen
+
+        Params
+        img - imagen
+
+        Returns
+        img - imagen con filtro
+        """
+        for i in range(0, self.filas):
+            for j in range(0, self.columnas):
+                pixel = img[i][j]
+                pixel[0] = pixel[0]
+                pixel[1] = pixel[0]
+                pixel[2] = pixel[0]
         return img
 
 ##### EJERCICIO 2 #####
@@ -271,147 +331,49 @@ class filtros():
 
         Params
         img -imagen
-        n - base del mosaico
-        m - altura del mosaico
+        x - base del mosaico
+        y - altura del mosaico
 
         Returns
         img - imagen con filtro
         """
-        img_w = self.columnas
-        img_h = self.filas
-        limit_w = img_w // x
-        limit_h = img_h // y
         rojos_prom = 0
         verdes_prom = 0
         azules_prom = 0
-        #rojos = []
-        #verdes = []
-        #azules = []
-        for z in range(0, limit_h):
-            for w in range(0, limit_w):
-                rojos = []
-                verdes = []
-                azules = []
-                for i in range(x * w, x * (w + 1)):
-                    for j in range(y * z, y * (z + 1)):
-                        pixel = img[j][i]
-                        rojos.append(pixel[2])
-                        verdes.append(pixel[1])
-                        azules.append(pixel[0])
-                        rojos_prom = self.promedioRGB(rojos)
-                        verdes_prom = self.promedioRGB(verdes)
-                        azules_prom = self.promedioRGB(azules)
-                img = self.rgb_prom(img, x * w, x * (w + 1), y * z,y * (z + 1), rojos_prom, verdes_prom, azules_prom)
-        if img_w % x != 0:
-            for w in range(0, img_h):
-                rojos = []
-                verdes = []
-                azules = []
-                for j in range(x * limit_w, img_w):
-                    for i in range(y * w, y * (w + 1)):
-                        pixel = img[i][j]
-                        rojos.append(pixel[2])
-                        verdes.append(pixel[1])
-                        azules.append(pixel[0])
-                        rojos_prom = self.promedioRGB(rojos)
-                        verdes_prom = self.promedioRGB(verdes)
-                        azules_prom = self.promedioRGB(azules)
-                img = self.rgb_prom(img, x * limit_w, img_w, y * w,y * (w + 1), rojos_prom, verdes_prom, azules_prom)
-        if img_h % y != 0:
-            for w in range(0, limit_w):
-                rojos = []
-                verdes = []
-                azules = []
-                for i in range(x * w, x * (w + 1)):
-                    for j in range(y * limit_h, img_h):
-                        pixel = img[j][i]
-                        rojos.append(pixel[2])
-                        verdes.append(pixel[1])
-                        azules.append(pixel[0])
-                        rojos_prom = self.promedioRGB(rojos)
-                        verdes_prom = self.promedioRGB(verdes)
-                        azules_prom = self.promedioRGB(azules)
-                img = self.rgb_prom(img, x * w, x * (w + 1), y * limit_h, img_h, rojos_prom, verdes_prom, azules_prom)
-            rojos = []
-            verdes = []
-            azules = []
-            for i in range(x * limitW, img_w):
-                for j in range(y * limit_h, img_h):
-                    pixel = img[j][i]
-                    rojos.append(pixel[2])
-                    verdes.append(pixel[1])
-                    azules.append(pixel[0])
-                    rojos_prom = self.promedioRGB(rojos)
-                    verdes_prom = self.promedioRGB(verdes)
-                    azules_prom = self.promedioRGB(azules)
-            img = self.rgb_prom(img, x * limit_w, imageW, y * limit_h, img_h, rojos_prom, verdes_prom, azules_prom)
-        return img
-
-
-
-    def promedioRGB(self, list):
-        promedio = 0
-        for p in list:
-            promedio += p
-        return (promedio // len(list))
-
-    def rgb_prom(self, img, ii, fi, ij, fj, r, g, b):
-        for i in range(ii, fj):
-            for j in range(ij, fj):
-                pixel = img[i][j]
-                pixel[0] = b
-                pixel[1] = g
-                pixel[2] = r
-        return img
-
-    def mosaico2(self, img, ancho, altura):
-        """
-        Aplica filtro de mosaico a una imagen
-
-        Params
-        n - base del mosaico
-        m - altura del mosaico
-        """
-        x = ancho
-        y = altura
-        if x != 1 or y != 1:
-            for i in range(x, self.columnas, x):
-                for j in range(y, self.filas, y):
-                    img = self.m(img, i - x, j - y, x, y)
-            if (i - x) < self.columnas:
-                for k in range(0, self.filas, y):
-                    img = self.m(img, k, i - x, self.columnas - (i - x), y)
-            if (j - y) < self.columnas:
-                for k in range(0, self.columnas, x):
-                    img = self.m(img, k, j - y, x, self.filas - (j - y))
-
-        return img
-
-    def m(self, img, ini, fin, w, h):
         rojos = []
         verdes = []
         azules = []
-        prom_rojos = 0
-        prom_verdes = 0
-        prom_azules = 0
-        pixeles = self.columnas * self.filas
-        for k in range(0, self.filas):
-            for h in range(0, self.columnas):
-                pixel = img[k][h]
-                rojos.append(pixel[0])
+        for i in range(0, self.filas, x):
+            for j in range(0, self.columnas, y):
+                pixel = img[i][j]
+                rojos.append(pixel[2])
                 verdes.append(pixel[1])
-                azules.append(pixel[2])
-        prom_rojos = self. promedioRGB(rojos)
-        prom_verdes = self.promedioRGB(verdes)
-        prom_azules = self.promedioRGB(azules)
-        for i in range(0, self.filas):
-            for j in range(0, self.columnas):
-                pixel= img[i][j]
-                pixel[2] = prom_rojos
-                pixel[1] = prom_verdes
-                pixel[0] = prom_azules
+                azules.append(pixel[0])
+        rojos_prom = self.promedioRGB(rojos)
+        verdes_prom = self.promedioRGB(verdes)
+        azules_prom = self.promedioRGB(azules)
+        for i in range(0, self.filas, x):
+            for j in range(0, self.columnas, y):
+                pixel = img[i][j]
+                pixel[2] = rojos_prom
+                pixel[1] = verdes_prom
+                pixel[0] = azules_prom
         return img
 
+    def promedioRGB(self, list):
+        """
+        Obtiene el promedio de una lista de números
+
+        Params
+        list - lista de numeros
+
+        Returns
+        promedio
+        """
+        promedio = 0
+        for p in list:
+            promedio += p
+        return (promedio / len(list))
 
 ##### EJERCICIO 4 #####
 
@@ -480,18 +442,16 @@ class filtros():
                 pixel = img[i][j]
                 if (pixel[0] + brillo) > 255:
                     pixel[0] = 255
-                elif (pixel[0] + brillo < 0):
+                elif (pixel[0] + brillo) < 0:
                     pixel[0] = 0
                 else:
                     pixel[0] += brillo
-
                 if (pixel[1] + brillo) > 255:
                     pixel[1] = 255
                 elif (pixel[1] + brillo < 0):
                     pixel[1] = 0
                 else:
                     pixel[1] += brillo
-
                 if (pixel[2] + brillo) > 255:
                     pixel[2] = 255
                 elif (pixel[2] + brillo < 0):
@@ -504,6 +464,6 @@ class filtros():
 #cp = "image.jpg"
 #im = filtros(cp)
 #img = im.obtener_imagen()
-#a = im.brillo(img, -255)
+#a = im.mosaico(img, 5, 5)
 #cv.imshow("result", a)
 #cv.waitKey()
