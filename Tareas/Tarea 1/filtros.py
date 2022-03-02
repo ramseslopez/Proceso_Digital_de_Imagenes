@@ -7,7 +7,8 @@ class filtros():
     """
     Clase de filtros básicos para imagenes
 
-    author - Ramses López
+    author - Ramses Antonio López Soto
+                  315319974
     date - febrero 2022
     """
 
