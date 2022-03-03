@@ -33,30 +33,27 @@ class filtros():
         return self.img
 
     def mica_RGB(self, img, red, green, blue):
-        for i in range(0, self.filas):
-            for j in range(0, self.columnas):
-                pixel = img[i][j]
-                m = max([pixel[0], pixel[1], pixel[2]])
-                if pixel[2] + red < m:
-                    pixel[2] = 0
+        """
+        Coloca una mica sobre la imagen
 
-                if pixel[1] + green < m:
-                    pixel[1] = 0
-
-                if pixel[0] + blue < m:
-                    pixel[0] = 0
-        return img
-
-    def mica_RGB2(self, img, red, green, blue):
-        r = red
-        g = green
-        b = blue
+        Params
+        img - imagen
+        red - componente rojo
+        green - componente verde
+        blue - componente azul
+        """
         for i in range(self.filas):
             for j in range(self.columnas):
-                #pixel = img[i][j]
-                img[i][j][0] = b and img[i][j][0]
-                img[i][j][1] = g and img[i][j][1]
-                img[i][j][2] = r and img[i][j][2]
+                pixel = img[i][j]
+                r = pixel[2]
+                g = pixel[1]
+                b = pixel[0]
+                pixel[0] = blue & b
+                pixel[1] = green & g
+                pixel[2] = red & r
+                img[i][j][0] = pixel[0]
+                img[i][j][1] = pixel[1]
+                img[i][j][2] = pixel[2]
         return img
 
     def convolucion(self, img, option):
@@ -151,7 +148,7 @@ class filtros():
             factor = 1.0
             bias = 0.0
             # ========= FIND EDGES =========
-        if option == 9: # find edge horizontal
+        if option == 9: # find edges horizontal
             m = [
                          [0,  0, -1,  0,  0],
                          [0,  0, -1,  0,  0],
@@ -161,7 +158,7 @@ class filtros():
                   ]
             factor = 1.0
             bias = 0.0
-        if option == 10: # find edge vertical
+        if option == 10: # find edges vertical
             m =[
                         [0,  0,  0,  0,  0],
                         [0,  0,  0,  0,  0],
@@ -171,7 +168,7 @@ class filtros():
                   ]
             factor = 1.0
             bias = 0.0
-        if option == 11: # find edge 45°
+        if option == 11: # find edges 45°
             m =[
                         [-1,  0,  0,  0,  0],
                         [0, -2,  0,  0,  0],
@@ -181,7 +178,7 @@ class filtros():
                   ]
             factor = 1.0
             bias = 0.0
-        if option == 12: # find edge todas direcciones
+        if option == 12: # find edges todas direcciones
             m =[
                         [-1,  0,  0,  0,  0],
                         [0, -2,  0,  0,  0],
@@ -235,6 +232,6 @@ cp = "photo.png"
 im = filtros(cp)
 img = im.obtener_imagen()
 #cv.imshow("a", img)
-a = im.convolucion(img, 8)
+a = im.mica_RGB(img, 155, 44, 98)
 cv.imshow("result", a)
 cv.waitKey()
