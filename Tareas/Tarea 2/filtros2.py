@@ -41,19 +41,16 @@ class filtros():
         red - componente rojo
         green - componente verde
         blue - componente azul
+
+        Returns
+        imagen modificada
         """
         for i in range(self.filas):
             for j in range(self.columnas):
                 pixel = img[i][j]
-                r = pixel[2]
-                g = pixel[1]
-                b = pixel[0]
-                pixel[0] = blue & b
-                pixel[1] = green & g
-                pixel[2] = red & r
-                img[i][j][0] = pixel[0]
-                img[i][j][1] = pixel[1]
-                img[i][j][2] = pixel[2]
+                pixel[0] = blue & pixel[0]
+                pixel[1] = green & pixel[1]
+                pixel[2] = red & pixel[2]
         return img
 
     def convolucion(self, img, option):
@@ -76,6 +73,7 @@ class filtros():
                     ]
             factor = 1.0
             bias = 0.0
+
         if option == 2: #blur v2
             m = [
                         [0, 0, 1, 0, 0],
@@ -86,6 +84,7 @@ class filtros():
                    ]
             factor = 1.0 / 13.0
             bias = 0.0
+
             # ========= MOTION BLUR =========
         if option == 3: #motion blur
             m = [
@@ -101,6 +100,7 @@ class filtros():
                     ]
             factor = 1.0 / 9.0
             bias = 0.0
+
             # ========= EMBOSS =========
         if option == 4: #emboss 45°
             m = [
@@ -110,6 +110,7 @@ class filtros():
                     ]
             factor = 1.0
             bias = 128.0
+
         if option == 5: #emboss exagerado
             m = [
                         [-1, -1, -1, -1, 0],
@@ -120,6 +121,7 @@ class filtros():
                     ]
             factor = 1.0
             bias = 128.0
+
             # ========= SHARPEN =========
         if option == 6: # sharpen agudo
             m = [
@@ -129,6 +131,7 @@ class filtros():
                    ]
             factor = 1.0
             bias = 0.0
+
         if option == 7: # sharpen sutil
             m = [
                           [-1, -1, -1, -1, -1],
@@ -139,6 +142,7 @@ class filtros():
                    ]
             factor = 1.0 / 8.0
             bias = 0.0
+
         if option == 8: # sharpen exagerado
             m = [
                         [1,  1,  1],
@@ -147,6 +151,7 @@ class filtros():
                    ]
             factor = 1.0
             bias = 0.0
+
             # ========= FIND EDGES =========
         if option == 9: # find edges horizontal
             m = [
@@ -158,6 +163,7 @@ class filtros():
                   ]
             factor = 1.0
             bias = 0.0
+
         if option == 10: # find edges vertical
             m =[
                         [0,  0,  0,  0,  0],
@@ -168,6 +174,7 @@ class filtros():
                   ]
             factor = 1.0
             bias = 0.0
+
         if option == 11: # find edges 45°
             m =[
                         [-1,  0,  0,  0,  0],
@@ -178,6 +185,7 @@ class filtros():
                   ]
             factor = 1.0
             bias = 0.0
+
         if option == 12: # find edges todas direcciones
             m =[
                         [-1,  0,  0,  0,  0],
@@ -187,6 +195,16 @@ class filtros():
                         [0,  0,  0,  0, -1]
                   ]
             factor = 1.0
+            bias = 0.0
+
+            # ========= MEAN =========
+        if option == 13: # mean
+            m =[
+                        [1, 1, 1],
+                        [1, 1, 1],
+                        [1, 1, 1]
+                  ]
+            factor = 1.0 / 9.0
             bias = 0.0
 
         w = self.filas
@@ -206,7 +224,6 @@ class filtros():
                     for filter_x in range(0, filter_w):
                         img_x = int((x - (filter_w / 2) + filter_y + w) % w)
                         img_y = int((y - (filter_h / 2) + filter_x + h) % h)
-
                         red += imgCopy[img_x][img_y][2] * m[filter_y][filter_x]
                         green += imgCopy[img_x][img_y][1] * m[filter_y][filter_x]
                         blue += imgCopy[img_x][img_y][0] * m[filter_y][filter_x]
@@ -224,14 +241,14 @@ class filtros():
 #    *bordes en todas direcciones ===
 #Sharpen (la imagen es más precisa) ===
 #Emboss (encuentra bordes y los pone en relieve 3D) ===
-#Promedio (mean)
-#Mediano
-# micaRGB
+#Promedio (mean) ===
+#Mediano 
+# micaRGB ===
 
-cp = "photo.png"
+cp = "noise.png"
 im = filtros(cp)
 img = im.obtener_imagen()
 #cv.imshow("a", img)
-a = im.mica_RGB(img, 155, 44, 98)
+a = im.convolucion(img, 13)
 cv.imshow("result", a)
 cv.waitKey()
