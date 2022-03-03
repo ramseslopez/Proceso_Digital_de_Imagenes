@@ -60,6 +60,17 @@ class filtros():
         return img
 
     def convolucion(self, img, option):
+        """
+        Realiza distintos filtros de convolucion
+
+        Params
+        img - imagen de entrada
+        option - tipo de filtro de convolucion
+
+        Returns
+        imagen modificada
+        """
+         # ========= BLUR =========
         if option == 1: # blur v1
             m = [
                         [0.0, 0.2,  0.0],
@@ -78,6 +89,7 @@ class filtros():
                    ]
             factor = 1.0 / 13.0
             bias = 0.0
+            # ========= MOTION BLUR =========
         if option == 3: #motion blur
             m = [
                         [1, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -92,7 +104,16 @@ class filtros():
                     ]
             factor = 1.0 / 9.0
             bias = 0.0
-        if option == 4: #emboss
+            # ========= EMBOSS =========
+        if option == 4: #emboss 45°
+            m = [
+                        [-1, -1, 0],
+                        [-1, 0, 1],
+                        [0, 1, 1]
+                    ]
+            factor = 1.0
+            bias = 128.0
+        if option == 5: #emboss exagerado
             m = [
                         [-1, -1, -1, -1, 0],
                         [-1, -1, -1, 0, 1],
@@ -102,7 +123,26 @@ class filtros():
                     ]
             factor = 1.0
             bias = 128.0
-        if option == 5: # sharpen
+            # ========= SHARPEN =========
+        if option == 6: # sharpen agudo
+            m = [
+                         [-1, -1, -1],
+                         [-1, 9, -1],
+                         [-1, -1, -1]
+                   ]
+            factor = 1.0
+            bias = 0.0
+        if option == 7: # sharpen sutil
+            m = [
+                          [-1, -1, -1, -1, -1],
+                          [-1, 2, 2, 2, -1],
+                          [-1, 2, 8, 2, -1],
+                          [-1, 2, 2, 2, -1],
+                          [-1, -1, -1, -1, -1]
+                   ]
+            factor = 1.0 / 8.0
+            bias = 0.0
+        if option == 8: # sharpen exagerado
             m = [
                         [1,  1,  1],
                         [1, -7,  1],
@@ -110,7 +150,8 @@ class filtros():
                    ]
             factor = 1.0
             bias = 0.0
-        if option == 6: # sharpen horizontal
+            # ========= FIND EDGES =========
+        if option == 9: # find edge horizontal
             m = [
                          [0,  0, -1,  0,  0],
                          [0,  0, -1,  0,  0],
@@ -120,27 +161,17 @@ class filtros():
                   ]
             factor = 1.0
             bias = 0.0
-        if option == 7: #sharpen vertical
+        if option == 10: # find edge vertical
             m =[
-                        [0,  0, -1,  0,  0],
-                        [0,  0, -1,  0,  0],
-                        [0,  0,  4,  0,  0],
-                        [0,  0, -1,  0,  0],
-                        [0,  0, -1,  0,  0]
+                        [0,  0,  0,  0,  0],
+                        [0,  0,  0,  0,  0],
+                        [-1,  -1,  4,  -1,  -1],
+                        [0,  0, 0,  0,  0],
+                        [0,  0, 0,  0,  0]
                   ]
             factor = 1.0
             bias = 0.0
-        if option == 8: # sharpen 45°
-            m =[
-                        [-1,  0,  0,  0,  0],
-                        [0, -2,  0,  0,  0],
-                        [0,  0,  6,  0,  0],
-                        [0,  0,  0, -2,  0],
-                        [0,  0,  0,  0, -1]
-                  ]
-            factor = 1.0
-            bias = 0.0
-        if option == 9: # sharpen todas direcciones
+        if option == 11: # find edge 45°
             m =[
                         [-1,  0,  0,  0,  0],
                         [0, -2,  0,  0,  0],
@@ -150,7 +181,16 @@ class filtros():
                   ]
             factor = 1.0
             bias = 0.0
-
+        if option == 12: # find edge todas direcciones
+            m =[
+                        [-1,  0,  0,  0,  0],
+                        [0, -2,  0,  0,  0],
+                        [0,  0,  6,  0,  0],
+                        [0,  0,  0, -2,  0],
+                        [0,  0,  0,  0, -1]
+                  ]
+            factor = 1.0
+            bias = 0.0
 
         w = self.filas
         h = self.columnas
@@ -180,8 +220,8 @@ class filtros():
 
 #Blur (difumina una imagen - la hace borrosa) ===
 #Motion blur (efecto de foto movida) ===
-#Find edge (encuentra bordes)
-#    *vertical
+#Find edge (encuentra bordes) ===
+#    *vertical ===
 #    *horizontal ===
 #    *45° ===
 #    *bordes en todas direcciones ===
@@ -195,6 +235,6 @@ cp = "photo.png"
 im = filtros(cp)
 img = im.obtener_imagen()
 #cv.imshow("a", img)
-a = im.convolucion(img, 7)
+a = im.convolucion(img, 8)
 cv.imshow("result", a)
 cv.waitKey()
