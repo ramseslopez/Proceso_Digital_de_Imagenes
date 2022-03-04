@@ -101,6 +101,8 @@ def detec_gris():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "grey"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 
 
@@ -148,6 +150,8 @@ def detec_rojo():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "red"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 def detec_verde():
     global image
@@ -166,6 +170,8 @@ def detec_verde():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "green"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 def detec_azul():
     global image
@@ -184,6 +190,8 @@ def detec_azul():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "blue"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 def detec_contraste():
     global image
@@ -202,6 +210,8 @@ def detec_contraste():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "hcontrast"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 def detec_inverso():
     global image
@@ -220,6 +230,8 @@ def detec_inverso():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "inverse"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 def detec_brillo():
     global image
@@ -237,6 +249,9 @@ def detec_brillo():
     lblOutputImage.image = img
 
     lblInfo3 = Label(root, text = "Modificada")
+    lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "brillo"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 
 def barra_brillo():
@@ -247,7 +262,7 @@ def barra_brillo():
 
     b_window = Toplevel(root)
 
-    scale1 = Scale(b_window, from_=-255, to=255, orient=HORIZONTAL, tickinterval=1, length=500)
+    scale1 = Scale(b_window, from_=-255, to=255, orient=HORIZONTAL, length=500, label="Brillo")
 
     scale1.pack()
     scale1.set (0)
@@ -290,7 +305,21 @@ def detec_mosaico():
     lblOutputImage.image = img
 
     lblInfo3 = Label(root, text = "Modificada")
-    pass
+    lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "mosaic"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
+
+
+def descargar_imagen(img, filter):
+    cv2.imwrite("result_" + str(filter) + ".png", cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+
+def cerrar():
+    dw = Tk()
+    dw.geometry('50x50')
+    lb = Label(dw, text="Descarga exitosa")
+    lb.grid(column=0, row=0)
+    btw = Button(dw, text="Cerrar", command=dw.destroy)
+    btw.grid(column=0, row=1)
 
 
 image = None

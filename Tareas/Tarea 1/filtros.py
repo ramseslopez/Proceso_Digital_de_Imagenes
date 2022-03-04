@@ -73,7 +73,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -92,7 +92,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -111,7 +111,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -130,7 +130,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -149,7 +149,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -168,7 +168,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -187,7 +187,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -206,7 +206,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -224,7 +224,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -242,7 +242,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -280,14 +280,13 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
                 pixel = img[i][j]
                 pixel[1] = 0
                 pixel[2] = 0
-
         return img
 
     def rojo(self, img):
@@ -298,7 +297,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -315,7 +314,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -336,12 +335,12 @@ class filtros():
         y - altura del mosaico
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
-        img_w = self.filas
-        img_h = self.columnas
-        lw = img_w // x
-        lh = img_h // y
+
+        lw = self.filas // x
+        lh = self.columnas // y
+
         rojos = 0
         verdes = 0
         azules = 0
@@ -362,12 +361,12 @@ class filtros():
                         azules = self.promedioRGB(prom_azules)
                 img = self.asignarRGB(img, x * w, x * (w + 1), y * z, y * (z + 1), rojos, verdes, azules)
 
-        if img_w % x != 0:
+        if self.filas % x != 0:
             for w in range(0, lh):
                 prom_rojos = []
                 prom_verdes = []
                 prom_azules = []
-                for i in range(x * lw, img_w):
+                for i in range(x * lw, self.filas):
                     for j in range(y * w, y * (w + 1)):
                         pixel = img[i][j]
                         prom_rojos.append(pixel[2])
@@ -376,15 +375,15 @@ class filtros():
                         rojos = self.promedioRGB(prom_rojos)
                         verdes = self.promedioRGB(prom_verdes)
                         azules = self.promedioRGB(prom_azules)
-                img = self.asignarRGB(img, x * lw, img_w, y * w, y * (w + 1), rojos, verdes, azules)
+                img = self.asignarRGB(img, x * lw, self.filas, y * w, y * (w + 1), rojos, verdes, azules)
 
-        if img_h % y != 0:
+        if self.columnas % y != 0:
             for w in range(0, lw):
                 prom_rojos = []
                 prom_verdes = []
                 prom_azules = []
                 for i in range(x * w, x * (w + 1)):
-                    for j in range(y * lh, img_h):
+                    for j in range(y * lh, self.columnas):
                         pixel = img[i][j]
                         prom_rojos.append(pixel[2])
                         prom_verdes.append(pixel[1])
@@ -392,14 +391,14 @@ class filtros():
                         rojos = self.promedioRGB(prom_rojos)
                         verdes = self.promedioRGB(prom_verdes)
                         azules = self.promedioRGB(prom_azules)
-                img = self.asignarRGB(img, x * w, x * (w + 1), y * lh, img_h, rojos, verdes, azules)
+                img = self.asignarRGB(img, x * w, x * (w + 1), y * lh, self.columnas, rojos, verdes, azules)
 
             prom_rojos = []
             prom_verdes = []
             prom_azules = []
 
-            for i in range(x * lw, img_w):
-                for j in range(y * lh, img_h):
+            for i in range(x * lw, self.filas):
+                for j in range(y * lh, self.columnas):
                     pixel = img[i][j]
                     prom_rojos.append(pixel[2])
                     prom_verdes.append(pixel[1])
@@ -408,11 +407,27 @@ class filtros():
                     verdes = self.promedioRGB(prom_verdes)
                     azules = self.promedioRGB(prom_azules)
 
-            img = self.asignarRGB(img, x * lw, img_w, y * lh, img_h, rojos, verdes, azules)
+            img = self.asignarRGB(img, x * lw, self.filas, y * lh, self.columnas, rojos, verdes, azules)
 
         return img
 
     def asignarRGB(self, img, inicio_w, fin_w, inicio_h, fin_h, r, g, b):
+        """
+        Asigna los colores a una region
+
+        Params
+        img - imagen
+        inicio_w - inicio del ancho de la region
+        fin_w _ fin del ancho de la region
+        inicio_h - inicio del alto de la region
+        fin_h _ fin del alto de la region
+        r - color rojo
+        g - color verde
+        b - color azul
+
+        Returns
+        region coloreada
+        """
         for i in range(inicio_w, fin_w):
             for j in range(inicio_h, fin_h):
                 img[i][j][2] = r
@@ -428,7 +443,7 @@ class filtros():
         list - lista de numeros
 
         Returns
-        promedio
+        promedio de la lista de numeros
         """
         promedio = 0
         for p in list:
@@ -445,7 +460,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -469,7 +484,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -495,7 +510,7 @@ class filtros():
         img - imagen
 
         Returns
-        img - imagen con filtro
+        imagen con filtro aplicado
         """
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -519,11 +534,3 @@ class filtros():
                 else:
                     pixel[2] += brillo
         return img
-
-
-#cp = "image5.jpg"
-#im = filtros(cp)
-#img = im.obtener_imagen()
-#a = im.mosaico(img, 10, 10)
-#cv.imshow("result", a)
-#cv.waitKey()
