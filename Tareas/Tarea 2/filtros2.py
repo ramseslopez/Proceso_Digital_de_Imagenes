@@ -6,7 +6,7 @@ import statistics as st
 
 class filtros():
     """
-    Clase de filtros básicos para imagenes
+    Clase de filtros de convolucion para imagenes
 
     author - Ramses Antonio López Soto
                   315319974
