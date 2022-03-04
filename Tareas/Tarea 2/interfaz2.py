@@ -147,15 +147,37 @@ def detec_find_edges():
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
 
-def detec_azul():
+def nueva_ventana_3():
+    global selected_3
+    new_w = Toplevel(root)
+
+    selected_3 = IntVar()
+    rad1 = Radiobutton(new_w, text='Sharpen Agudo', width=25,value=1, variable=selected_3, command=detec_sharpen)
+    rad2 = Radiobutton(new_w, text='Sharpen Sutil',width=25, value=2, variable=selected_3, command=detec_sharpen)
+    rad3 = Radiobutton(new_w, text='Sharpen Exagerado',width=25, value=3, variable=selected_3, command=detec_sharpen)
+    rad1.grid(column=0, row=4)
+    rad2.grid(column=0, row=5)
+    rad3.grid(column=0, row=6)
+
+def detec_emboss():
     global image
     global path_image
     global fil
 
-    fil = filtros(path_image)
-    img = fil.obtener_imagen()
+    if selected_4.get() == 1:
+        fil = filtros(path_image)
+        img = fil.obtener_imagen()
+        imagen = fil.convolucion(img, 4)
+    if selected_4.get() == 2:
+        fil = filtros(path_image)
+        img = fil.obtener_imagen()
+        imagen = fil.convolucion(img, 4)
+        imagen = fil.gris(imagen)
+    if selected_4.get() == 3:
+        fil = filtros(path_image)
+        img = fil.obtener_imagen()
+        imagen = fil.convolucion(img, 5)
 
-    imagen = fil.azul(img)
     imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
     im = Image.fromarray(imageToShowOutput)
     img = ImageTk.PhotoImage(image=im)
@@ -165,15 +187,24 @@ def detec_azul():
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
 
-def detec_contraste():
+def detec_sharpen():
     global image
     global path_image
     global fil
 
-    fil = filtros(path_image)
-    img = fil.obtener_imagen()
+    if selected_3.get() == 1:
+        fil = filtros(path_image)
+        img = fil.obtener_imagen()
+        imagen = fil.convolucion(img, 6)
+    if selected_3.get() == 2:
+        fil = filtros(path_image)
+        img = fil.obtener_imagen()
+        imagen = fil.convolucion(img, 7)
+    if selected_3.get() == 3:
+        fil = filtros(path_image)
+        img = fil.obtener_imagen()
+        imagen = fil.convolucion(img, 8)
 
-    imagen = fil.alto_contraste(img)
     imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
     im = Image.fromarray(imageToShowOutput)
     img = ImageTk.PhotoImage(image=im)
@@ -183,7 +214,8 @@ def detec_contraste():
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
 
-def detec_inverso():
+
+def detec_promedio():
     global image
     global path_image
     global fil
@@ -191,7 +223,7 @@ def detec_inverso():
     fil = filtros(path_image)
     img = fil.obtener_imagen()
 
-    imagen = fil.inverso(img)
+    imagen = fil.convolucion(img, 13)
     imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
     im = Image.fromarray(imageToShowOutput)
     img = ImageTk.PhotoImage(image=im)
@@ -201,7 +233,7 @@ def detec_inverso():
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
 
-def detec_brillo():
+def detec_mediana():
     global image
     global path_image
     global fil
@@ -209,7 +241,25 @@ def detec_brillo():
     fil = filtros(path_image)
     img = fil.obtener_imagen()
 
-    imagen = fil.brillo(img, scale1.get())
+    imagen = fil.median(img)
+    imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
+    im = Image.fromarray(imageToShowOutput)
+    img = ImageTk.PhotoImage(image=im)
+    lblOutputImage.configure(image=img)
+    lblOutputImage.image = img
+
+    lblInfo3 = Label(root, text = "Modificada")
+    lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+
+def detec_mica_rgb():
+    global image
+    global path_image
+    global fil
+
+    fil = filtros(path_image)
+    img = fil.obtener_imagen()
+
+    imagen = fil.mica_RGB(img, scale1.get(), scale2.get(), scale3.get())
     imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
     im = Image.fromarray(imageToShowOutput)
     img = ImageTk.PhotoImage(image=im)
@@ -219,40 +269,45 @@ def detec_brillo():
     lblInfo3 = Label(root, text = "Modificada")
 
 
-def barra_brillo():
+def barra_rgb():
     global image
     global path_image
     global fil
     global scale1
+    global scale2
+    global scale3
 
     b_window = Toplevel(root)
 
-    scale1 = Scale(b_window, from_=-255, to=255, orient=HORIZONTAL, tickinterval=1, length=500)
+    scale1 = Scale(b_window, from_=0, to=255, orient=HORIZONTAL, length=500,  troughcolor="red")
 
     scale1.pack()
     scale1.set (0)
 
-    btn_brillo= Button(b_window, text="Aplicar", command=detec_brillo)
+    scale2 = Scale(b_window, from_=0, to=255, orient=HORIZONTAL, length=500, troughcolor="green")
+
+    scale2.pack()
+    scale2.set (1)
+
+    scale3 = Scale(b_window, from_=0, to=255, orient=HORIZONTAL, length=500, troughcolor="blue")
+
+    scale3.pack()
+    scale3.set (2)
+
+    btn_brillo= Button(b_window, text="Aplicar", command=detec_mica_rgb)
     btn_brillo.pack()
 
-def m_ventana():
-    global image
-    global path_image
-    global fil
-    global entry1
-    global entry2
+def nueva_ventana_4():
+    global selected_4
+    new_w = Toplevel(root)
 
-    m_window = Toplevel(root)
-    m_label1 = Label(m_window, text="ancho")
-    m_label1.pack()
-    entry1 = Entry(m_window)
-    entry1.pack()
-    m_label2 = Label(m_window, text="alto")
-    m_label2.pack()
-    entry2 = Entry(m_window)
-    entry2.pack()
-    btn_m = Button(m_window, text="Aplicar", command=detec_mosaico)
-    btn_m.pack()
+    selected_4 = IntVar()
+    rad1 = Radiobutton(new_w, text='Emboss 45°', width=25,value=1, variable=selected_4, command=detec_emboss)
+    rad2 = Radiobutton(new_w, text='Emboss Gray',width=25, value=2, variable=selected_4, command=detec_emboss)
+    rad3 = Radiobutton(new_w, text='Emboss Exagerado',width=25, value=3, variable=selected_4, command=detec_emboss)
+    rad1.grid(column=0, row=4)
+    rad2.grid(column=0, row=5)
+    rad3.grid(column=0, row=6)
 
 def detec_mosaico():
     global image
@@ -296,11 +351,11 @@ lblInfo2.grid(column=0, row=3, padx=5, pady=5)
 fil_btn_1 = Button(root, text= "Blur", width=25, command=nueva_ventana)
 fil_btn_2 = Button(root, text= "Motion Blur", width=25, command=detec_motion_blur)
 fil_btn_3 = Button(root, text= "Find Edges", width=25, command=nueva_ventana_2)
-fil_btn_4 = Button(root, text= "Sharpen", width=25, command=detec_azul)
-fil_btn_5 = Button(root, text= "Emboss", width=25, command=m_ventana)
-fil_btn_6 = Button(root, text= "Promedio", width=25, command=detec_contraste)
-fil_btn_7 = Button(root, text= "Mediana", width=25, command=detec_inverso)
-fil_btn_8 = Button(root, text= "Mica RGB", width=25, command=barra_brillo)
+fil_btn_4 = Button(root, text= "Sharpen", width=25, command=nueva_ventana_3)
+fil_btn_5 = Button(root, text= "Emboss", width=25, command=nueva_ventana_4)
+fil_btn_6 = Button(root, text= "Promedio", width=25, command=detec_promedio)
+fil_btn_7 = Button(root, text= "Mediana", width=25, command=detec_mediana)
+fil_btn_8 = Button(root, text= "Mica RGB", width=25, command=barra_rgb)
 
 fil_btn_1.grid(column=0, row=4, padx=5,pady=5)
 fil_btn_2.grid(column=0, row=5, padx=5,pady=5)
