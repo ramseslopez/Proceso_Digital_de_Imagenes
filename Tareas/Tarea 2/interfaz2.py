@@ -1,11 +1,12 @@
 from tkinter import *
 from tkinter import filedialog
+from tkinter import ttk
 from PIL import Image
 from PIL import ImageTk
 import cv2
 import imutils
 import numpy as np
-from filtros import filtros
+from filtros2 import filtros
 
 """
 interfaz grafica
@@ -47,7 +48,7 @@ def elegir_imagen():
         lblInfo1 = Label(root, text="Original")
         lblInfo1.grid(column=0,row=1, padx=5, pady=5)
 
-def detec_gris():
+def detec_blur():
     global image
     global path_image
     global fil
@@ -55,43 +56,11 @@ def detec_gris():
     if selected.get() == 1:
         fil = filtros(path_image)
         img = fil.obtener_imagen()
-        imagen = fil.gris(img, 1)
+        imagen = fil.convolucion(img, 1)
     if selected.get() == 2:
         fil = filtros(path_image)
         img = fil.obtener_imagen()
-        imagen = fil.gris(img, 2)
-    if selected.get() == 3:
-        fil = filtros(path_image)
-        img = fil.obtener_imagen()
-        imagen = fil.gris(img, 3)
-    if selected.get() == 4:
-        fil = filtros(path_image)
-        img = fil.obtener_imagen()
-        imagen = fil.gris(img, 4)
-    if selected.get() == 5:
-        fil = filtros(path_image)
-        img = fil.obtener_imagen()
-        imagen = fil.gris(img, 5)
-    if selected.get() == 6:
-        fil = filtros(path_image)
-        img = fil.obtener_imagen()
-        imagen = fil.gris(img, 6)
-    if selected.get() == 7:
-        fil = filtros(path_image)
-        img = fil.obtener_imagen()
-        imagen = fil.gris(img, 7)
-    if selected.get() == 8:
-        fil = filtros(path_image)
-        img = fil.obtener_imagen()
-        imagen = fil.gris(img, 8)
-    if selected.get() == 9:
-        fil = filtros(path_image)
-        img = fil.obtener_imagen()
-        imagen = fil.gris(img, 9)
-    if selected.get() == 10:
-        fil = filtros(path_image)
-        img = fil.obtener_imagen()
-        imagen = fil.gris(img, 10)
+        imagen = fil.convolucion(img, 2)
 
     imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
     im = Image.fromarray(imageToShowOutput)
@@ -109,29 +78,13 @@ def nueva_ventana():
     new_w = Toplevel(root)
 
     selected = IntVar()
-    rad1 = Radiobutton(new_w, text='Gris v1', width=25,value=1, variable=selected, command=detec_gris)
-    rad2 = Radiobutton(new_w, text='Gris v2',width=25, value=2, variable=selected, command=detec_gris)
-    rad3 = Radiobutton(new_w, text='Gris v3',width=25, value=3, variable=selected, command=detec_gris)
-    rad4 = Radiobutton(new_w, text='Gris v4',width=25, value=4, variable=selected, command=detec_gris)
-    rad5 = Radiobutton(new_w, text='Gris v5',width=25, value=5, variable=selected, command=detec_gris)
-    rad6 = Radiobutton(new_w, text='Gris v6',width=25, value=6, variable=selected, command=detec_gris)
-    rad7 = Radiobutton(new_w, text='Gris v7',width=25, value=7, variable=selected, command=detec_gris)
-    rad8 = Radiobutton(new_w, text='Gris v8',width=25, value=8, variable=selected, command=detec_gris)
-    rad9 = Radiobutton(new_w, text='Gris v9',width=25, value=9, variable=selected, command=detec_gris)
-    rad10 = Radiobutton(new_w, text='Gris v10',width=25, value=10, variable=selected, command=detec_gris)
+    rad1 = Radiobutton(new_w, text='Blur v1', width=25,value=1, variable=selected, command=detec_blur)
+    rad2 = Radiobutton(new_w, text='Blur v2',width=25, value=2, variable=selected, command=detec_blur)
     rad1.grid(column=0, row=4)
     rad2.grid(column=0, row=5)
-    rad3.grid(column=0, row=6)
-    rad4.grid(column=0, row=7)
-    rad5.grid(column=0, row=8)
-    rad6.grid(column=0, row=9)
-    rad7.grid(column=0, row=10)
-    rad8.grid(column=0, row=11)
-    rad9.grid(column=0, row=12)
-    rad10.grid(column=0, row=13)
 
 
-def detec_rojo():
+def detec_motion_blur():
     global image
     global path_image
     global fil
@@ -139,7 +92,7 @@ def detec_rojo():
     fil = filtros(path_image)
     img = fil.obtener_imagen()
 
-    imagen = fil.rojo(img)
+    imagen = fil.convolucion(img, 3)
     imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
     im = Image.fromarray(imageToShowOutput)
     img = ImageTk.PhotoImage(image=im)
@@ -149,15 +102,42 @@ def detec_rojo():
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
 
-def detec_verde():
+def nueva_ventana_2():
+    global selected_2
+    new_w = Toplevel(root)
+
+    selected_2 = IntVar()
+    rad1 = Radiobutton(new_w, text='FE Horizontal', width=25,value=1, variable=selected_2, command=detec_find_edges)
+    rad2 = Radiobutton(new_w, text='FE Vertical',width=25, value=2, variable=selected_2, command=detec_find_edges)
+    rad3 = Radiobutton(new_w, text='FE 45°',width=25, value=3, variable=selected_2, command=detec_find_edges)
+    rad4 = Radiobutton(new_w, text='FE Todos',width=25, value=4, variable=selected_2, command=detec_find_edges)
+    rad1.grid(column=0, row=4)
+    rad2.grid(column=0, row=5)
+    rad3.grid(column=0, row=6)
+    rad4.grid(column=0, row=7)
+
+def detec_find_edges():
     global image
     global path_image
     global fil
 
-    fil = filtros(path_image)
-    img = fil.obtener_imagen()
+    if selected_2.get() == 1:
+        fil = filtros(path_image)
+        img = fil.obtener_imagen()
+        imagen = fil.convolucion(img, 9)
+    if selected_2.get() == 2:
+        fil = filtros(path_image)
+        img = fil.obtener_imagen()
+        imagen = fil.convolucion(img, 10)
+    if selected_2.get() == 3:
+        fil = filtros(path_image)
+        img = fil.obtener_imagen()
+        imagen = fil.convolucion(img, 11)
+    if selected_2.get() == 4:
+        fil = filtros(path_image)
+        img = fil.obtener_imagen()
+        imagen = fil.convolucion(img, 12)
 
-    imagen = fil.verde(img)
     imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
     im = Image.fromarray(imageToShowOutput)
     img = ImageTk.PhotoImage(image=im)
@@ -313,14 +293,14 @@ lblInfo2 = Label(root, text= "¿Que filtro deseas probar?")
 lblInfo2.grid(column=0, row=3, padx=5, pady=5)
 
 
-fil_btn_1 = Button(root, text= "Gris", width=25, command=nueva_ventana)
-fil_btn_2 = Button(root, text= "Rojo", width=25, command=detec_rojo)
-fil_btn_3 = Button(root, text= "Verde", width=25, command=detec_verde)
-fil_btn_4 = Button(root, text= "Azul", width=25, command=detec_azul)
-fil_btn_5 = Button(root, text= "Mosaico", width=25, command=m_ventana)
-fil_btn_6 = Button(root, text= "Contraste", width=25, command=detec_contraste)
-fil_btn_7 = Button(root, text= "Inverso", width=25, command=detec_inverso)
-fil_btn_8 = Button(root, text= "Brillo", width=25, command=barra_brillo)
+fil_btn_1 = Button(root, text= "Blur", width=25, command=nueva_ventana)
+fil_btn_2 = Button(root, text= "Motion Blur", width=25, command=detec_motion_blur)
+fil_btn_3 = Button(root, text= "Find Edges", width=25, command=nueva_ventana_2)
+fil_btn_4 = Button(root, text= "Sharpen", width=25, command=detec_azul)
+fil_btn_5 = Button(root, text= "Emboss", width=25, command=m_ventana)
+fil_btn_6 = Button(root, text= "Promedio", width=25, command=detec_contraste)
+fil_btn_7 = Button(root, text= "Mediana", width=25, command=detec_inverso)
+fil_btn_8 = Button(root, text= "Mica RGB", width=25, command=barra_brillo)
 
 fil_btn_1.grid(column=0, row=4, padx=5,pady=5)
 fil_btn_2.grid(column=0, row=5, padx=5,pady=5)

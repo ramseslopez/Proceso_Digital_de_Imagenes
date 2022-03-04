@@ -2,7 +2,7 @@ import numpy as np
 import cv2 as cv
 import random
 import math
-from PIL import ImageTk, Image
+import statistics as st
 
 class filtros():
     """
@@ -213,7 +213,7 @@ class filtros():
         filter_w = len(m)
         filter_h = len(m[0])
 
-        imgCopy = img.copy()
+        img_copy = img.copy()
 
         for x in range(0, w):
             for y in range(0, h):
@@ -224,31 +224,86 @@ class filtros():
                     for filter_x in range(0, filter_w):
                         img_x = int((x - (filter_w / 2) + filter_y + w) % w)
                         img_y = int((y - (filter_h / 2) + filter_x + h) % h)
-                        red += imgCopy[img_x][img_y][2] * m[filter_y][filter_x]
-                        green += imgCopy[img_x][img_y][1] * m[filter_y][filter_x]
-                        blue += imgCopy[img_x][img_y][0] * m[filter_y][filter_x]
+                        red += img_copy[img_x][img_y][2] * m[filter_y][filter_x]
+                        green += img_copy[img_x][img_y][1] * m[filter_y][filter_x]
+                        blue += img_copy[img_x][img_y][0] * m[filter_y][filter_x]
                 img[x][y][2] = int(min(max(int(factor * red + bias), 0), 255))
                 img[x][y][1] = int(min(max(int(factor * green + bias), 0), 255))
                 img[x][y][0] = int(min(max(int(factor * blue + bias), 0), 255))
         return img
 
-#Blur (difumina una imagen - la hace borrosa) ===
-#Motion blur (efecto de foto movida) ===
-#Find edge (encuentra bordes) ===
-#    *vertical ===
-#    *horizontal ===
-#    *45° ===
-#    *bordes en todas direcciones ===
-#Sharpen (la imagen es más precisa) ===
-#Emboss (encuentra bordes y los pone en relieve 3D) ===
-#Promedio (mean) ===
-#Mediano 
-# micaRGB ===
+    def median(self, img):
 
-cp = "noise.png"
-im = filtros(cp)
-img = im.obtener_imagen()
+        m = [
+                    [22, 24, 27],
+                    [31, 98, 29],
+                    [27, 22, 23],
+               ]
+
+        w = self.filas
+        h = self.columnas
+
+        filter_w = len(m)
+        filter_h = len(m[0])
+
+        img_copy = img.copy()
+
+        for x in range(0,w):
+            for y in range(0, h):
+                red = []
+                green = []
+                blue = []
+                for filter_y in range(0, filter_h):
+                    for filter_x in range(0, filter_w):
+                        img_x = int((x - (filter_w / 2) + filter_y + w) % w)
+                        img_y = int((x - (filter_w / 2) + filter_x + y) % w)
+                        red.append(img_copy[img_x][img_y][2])
+                        green.append(img_copy[img_x][img_y][1])
+                        blue.append(img_copy[img_x][img_y][0])
+
+                red.sort()
+                green.sort()
+                blue.sort()
+
+                img[x][y][2] = self.media(red)
+                img[x][y][1] = self.media(green)
+                img[x][y][0] = self.media(blue)
+
+
+        return img
+
+    def media(self, list):
+        m = float(len(list)) / 2
+        if m % 2 != 0:
+            return list[int(m - .5)]
+        else:
+            return (list[int(m)], list[int(m - 1)])
+
+
+    def gris(self, img):
+        """
+        Aplica un filtro gris a la imagen
+
+        Params
+        img - imagen
+
+        Returns
+        img - imagen con filtro
+        """
+        for i in range(0, self.filas):
+            for j in range(0, self.columnas):
+                pixel = img[i][j]
+                pixel[0] = pixel[1]
+                pixel[1] = pixel[1]
+                pixel[2] = pixel[1]
+        return img
+
+
+#cp = "noise.png"
+#im = filtros(cp)
+#img = im.obtener_imagen()
 #cv.imshow("a", img)
-a = im.convolucion(img, 13)
-cv.imshow("result", a)
-cv.waitKey()
+#a = im.median(img)
+#a= im.gris(a)
+#cv.imshow("result", a)
+#cv.waitKey()
