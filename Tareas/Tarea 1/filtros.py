@@ -338,27 +338,86 @@ class filtros():
         Returns
         img - imagen con filtro
         """
-        rojos_prom = 0
-        verdes_prom = 0
-        azules_prom = 0
-        rojos = []
-        verdes = []
-        azules = []
-        for i in range(0, self.filas, x):
-            for j in range(0, self.columnas, y):
-                pixel = img[i][j]
-                rojos.append(pixel[2])
-                verdes.append(pixel[1])
-                azules.append(pixel[0])
-        rojos_prom = self.promedioRGB(rojos)
-        verdes_prom = self.promedioRGB(verdes)
-        azules_prom = self.promedioRGB(azules)
-        for i in range(0, self.filas, x):
-            for j in range(0, self.columnas, y):
-                pixel = img[i][j]
-                pixel[2] = rojos_prom
-                pixel[1] = verdes_prom
-                pixel[0] = azules_prom
+        img_w = self.filas
+        img_h = self.columnas
+        lw = img_w // x
+        lh = img_h // y
+        rojos = 0
+        verdes = 0
+        azules = 0
+
+        for z in range(0, lh):
+            for w in range(0, lw):
+                prom_rojos = []
+                prom_verdes = []
+                prom_azules = []
+                for i in range(x * w, x * (w + 1)):
+                    for j in range(y * z, y * (z + 1)):
+                        pixel = img[i][j]
+                        prom_rojos.append(pixel[2])
+                        prom_verdes.append(pixel[1])
+                        prom_azules.append(pixel[0])
+                        rojos = self.promedioRGB(prom_rojos)
+                        verdes = self.promedioRGB(prom_verdes)
+                        azules = self.promedioRGB(prom_azules)
+                img = self.asignarRGB(img, x * w, x * (w + 1), y * z, y * (z + 1), rojos, verdes, azules)
+
+        if img_w % x != 0:
+            for w in range(0, lh):
+                prom_rojos = []
+                prom_verdes = []
+                prom_azules = []
+                for i in range(x * lw, img_w):
+                    for j in range(y * w, y * (w + 1)):
+                        pixel = img[i][j]
+                        prom_rojos.append(pixel[2])
+                        prom_verdes.append(pixel[1])
+                        prom_azules.append(pixel[0])
+                        rojos = self.promedioRGB(prom_rojos)
+                        verdes = self.promedioRGB(prom_verdes)
+                        azules = self.promedioRGB(prom_azules)
+                img = self.asignarRGB(img, x * lw, img_w, y * w, y * (w + 1), rojos, verdes, azules)
+
+        if img_h % y != 0:
+            for w in range(0, lw):
+                prom_rojos = []
+                prom_verdes = []
+                prom_azules = []
+                for i in range(x * w, x * (w + 1)):
+                    for j in range(y * lh, img_h):
+                        pixel = img[i][j]
+                        prom_rojos.append(pixel[2])
+                        prom_verdes.append(pixel[1])
+                        prom_azules.append(pixel[0])
+                        rojos = self.promedioRGB(prom_rojos)
+                        verdes = self.promedioRGB(prom_verdes)
+                        azules = self.promedioRGB(prom_azules)
+                img = self.asignarRGB(img, x * w, x * (w + 1), y * lh, img_h, rojos, verdes, azules)
+
+            prom_rojos = []
+            prom_verdes = []
+            prom_azules = []
+
+            for i in range(x * lw, img_w):
+                for j in range(y * lh, img_h):
+                    pixel = img[i][j]
+                    prom_rojos.append(pixel[2])
+                    prom_verdes.append(pixel[1])
+                    prom_azules.append(pixel[0])
+                    rojos = self.promedioRGB(prom_rojos)
+                    verdes = self.promedioRGB(prom_verdes)
+                    azules = self.promedioRGB(prom_azules)
+
+            img = self.asignarRGB(img, x * lw, img_w, y * lh, img_h, rojos, verdes, azules)
+
+        return img
+
+    def asignarRGB(self, img, inicio_w, fin_w, inicio_h, fin_h, r, g, b):
+        for i in range(inicio_w, fin_w):
+            for j in range(inicio_h, fin_h):
+                img[i][j][2] = r
+                img[i][j][1] = g
+                img[i][j][0] = b
         return img
 
     def promedioRGB(self, list):
@@ -462,9 +521,9 @@ class filtros():
         return img
 
 
-#cp = "image.jpg"
+#cp = "image5.jpg"
 #im = filtros(cp)
 #img = im.obtener_imagen()
-#a = im.mosaico(img, 5, 5)
+#a = im.mosaico(img, 10, 10)
 #cv.imshow("result", a)
 #cv.waitKey()

@@ -70,6 +70,8 @@ def detec_blur():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "blur"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 
 
@@ -101,6 +103,8 @@ def detec_motion_blur():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "mblur"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 def nueva_ventana_2():
     global selected_2
@@ -146,6 +150,8 @@ def detec_find_edges():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "edges"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 def nueva_ventana_3():
     global selected_3
@@ -186,6 +192,8 @@ def detec_emboss():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "emboss"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 def detec_sharpen():
     global image
@@ -213,6 +221,8 @@ def detec_sharpen():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "sharpen"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 
 def detec_promedio():
@@ -232,6 +242,8 @@ def detec_promedio():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "mean"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 def detec_mediana():
     global image
@@ -250,11 +262,14 @@ def detec_mediana():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "median"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 def detec_mica_rgb():
     global image
     global path_image
     global fil
+    global imageToShowOutput
 
     fil = filtros(path_image)
     img = fil.obtener_imagen()
@@ -267,6 +282,9 @@ def detec_mica_rgb():
     lblOutputImage.image = img
 
     lblInfo3 = Label(root, text = "Modificada")
+    lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "micaRGB"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
 
 def barra_rgb():
@@ -309,23 +327,18 @@ def nueva_ventana_4():
     rad2.grid(column=0, row=5)
     rad3.grid(column=0, row=6)
 
-def detec_mosaico():
-    global image
-    global path_image
-    global fil
+def descargar_imagen(img, filter):
+    cv2.imwrite("result_" + str(filter) + ".png", cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
-    fil = filtros(path_image)
-    img = fil.obtener_imagen()
 
-    imagen = fil.mosaico(img, int(entry1.get()), int(entry2.get()))
-    imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
-    im = Image.fromarray(imageToShowOutput)
-    img = ImageTk.PhotoImage(image=im)
-    lblOutputImage.configure(image=img)
-    lblOutputImage.image = img
+def cerrar():
+    dw = Tk()
+    dw.geometry('50x50')
+    lb = Label(dw, text="Descarga exitosa")
+    lb.grid(column=0, row=0)
+    btw = Button(dw, text="Cerrar", command=dw.destroy)
+    btw.grid(column=0, row=1)
 
-    lblInfo3 = Label(root, text = "Modificada")
-    pass
 
 
 image = None
@@ -334,7 +347,7 @@ fil = None
 
 # ventana principal
 root = Tk()
-root.title("Tarea 1")
+root.title("Tarea 2")
 
 # se muestra la imagen de entrada
 lblInputImage = Label(root)
@@ -369,5 +382,7 @@ fil_btn_8.grid(column=0, row=11, padx=5,pady=5)
 # boton para elegir la imagen
 btn = Button(root, text="Elegir imagen", width=25, command=elegir_imagen)
 btn.grid(column=0, row=0, padx=5,pady=5)
+
+
 
 root.mainloop()
