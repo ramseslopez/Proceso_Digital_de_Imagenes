@@ -279,42 +279,156 @@ class filtros():
         letra_1 = ""
         letra_2 = ""
         for i in range(0, self.filas):
-            letra = "\n"
+            letra += "\n"
             for j in range(0, self.columnas):
                 gris = ((img[i, j][0] * 0.3) + (img[i, j][1] * 0.59) + (img[i, j][2] * 0.11))
                 if (gris >= 0 and gris <= 36):
                     letra_1 = '6'
                     letra_2 = '^'
-                    letra += letra_1 + letra_2
+                    #letra += letra_1 + letra_2
                 if (gris >=37 and gris <= 72):
                     letra_1 = '5'
                     letra_2 = '%'
-                    letra += letra_1 + letra_2
+                    #letra += letra_1 + letra_2
                 if (gris >= 73 and gris <= 108):
                     letra_1 = '4'
                     letra_2 = '$'
-                    letra += letra_1 + letra_2
+                    #letra += letra_1 + letra_2
                 if (gris >= 109 and gris <= 144):
                     letra_1 = '3'
                     letra_2 = '#'
-                    letra += letra_1 + letra_2
+                    #letra += letra_1 + letra_2
                 if (gris >= 145 and gris <= 180):
                     letra_1 = '2'
                     letra_2 = '@'
-                    letra += letra_1 + letra_2
+                    #letra += letra_1 + letra_2
                 if (gris >= 181 and gris <= 216):
                     letra_1 = '1'
                     letra_2 = '!'
-                    letra += letra_1 + letra_2
+                    #letra += letra_1 + letra_2
                 if (gris >= 217 and gris <= 255):
                     letra_1 = '0'
                     letra_2 = ')'
-                    letra += letra_1 + letra_2
+                letra += letra_1 + letra_2
+        return letra
+
+    def dominos_html(self, img):
+        letra = "<FONT SIZE = 1 COLOR  = #000008> <pre> <title> Output Image </title>"
+        letra_1 = ""
+        letra_2 = ""
+        for i in range(0, self.filas):
+            letra += "<br>"
+            for j in range(0, self.columnas):
+                gris = ((img[i, j][0] * 0.3) + (img[i, j][1] * 0.59) + (img[i, j][2] * 0.11))
+                if (gris >= 0 and gris <= 36):
+                    letra_1 = '6'
+                    letra_2 = '^'
+                    #letra += letra_1 + letra_2
+                if (gris >=37 and gris <= 72):
+                    letra_1 = '5'
+                    letra_2 = '%'
+                    #letra += letra_1 + letra_2
+                if (gris >= 73 and gris <= 108):
+                    letra_1 = '4'
+                    letra_2 = '$'
+                    #letra += letra_1 + letra_2
+                if (gris >= 109 and gris <= 144):
+                    letra_1 = '3'
+                    letra_2 = '#'
+                    #letra += letra_1 + letra_2
+                if (gris >= 145 and gris <= 180):
+                    letra_1 = '2'
+                    letra_2 = '@'
+                    #letra += letra_1 + letra_2
+                if (gris >= 181 and gris <= 216):
+                    letra_1 = '1'
+                    letra_2 = '!'
+                    #letra += letra_1 + letra_2
+                if (gris >= 217 and gris <= 255):
+                    letra_1 = '0'
+                    letra_2 = ')'
+                letra += "<font face = 'Las Vegas White Dominoes'>" + (letra_1 + letra_2)
+        return letra
+
+    def dominos_black(self, img):
+        letra = ""
+        letra_1 = ""
+        letra_2 = ""
+        for i in range(0, self.filas):
+            letra += "\n"
+            for j in range(0, self.columnas):
+                gris = ((img[i, j][0] * 0.3) + (img[i, j][1] * 0.59) + (img[i, j][2] * 0.11))
+                if (gris >= 0 and gris <= 36):
+                    letra_1 = '0'
+                    letra_2 = ')'
+                    #letra += letra_1 + letra_2
+                if (gris >=37 and gris <= 72):
+                    letra_1 = '1'
+                    letra_2 = '!'
+                    #letra += letra_1 + letra_2
+                if (gris >= 73 and gris <= 108):
+                    letra_1 = '2'
+                    letra_2 = '@'
+                    #letra += letra_1 + letra_2
+                if (gris >= 109 and gris <= 144):
+                    letra_1 = '3'
+                    letra_2 = '#'
+                    #letra += letra_1 + letra_2
+                if (gris >= 145 and gris <= 180):
+                    letra_1 = '4'
+                    letra_2 = '$'
+                    #letra += letra_1 + letra_2
+                if (gris >= 181 and gris <= 216):
+                    letra_1 = '5'
+                    letra_2 = '%'
+                    #letra += letra_1 + letra_2
+                if (gris >= 217 and gris <= 255):
+                    letra_1 = '6'
+                    letra_2 = '^'
+                letra += letra_1 + letra_2
+        return letra
+
+    def dominos_black_html(self, img):
+        letra = "<FONT SIZE = 1 COLOR  = #000008> <pre> <title> Output Image </title>"
+        letra_1 = ""
+        letra_2 = ""
+        for i in range(0, self.filas):
+            letra += "<br>"
+            for j in range(0, self.columnas):
+                gris = ((img[i, j][0] * 0.3) + (img[i, j][1] * 0.59) + (img[i, j][2] * 0.11))
+                if (gris >= 0 and gris <= 36):
+                    letra_1 = '0'
+                    letra_2 = ')'
+                    #letra += letra_1 + letra_2
+                if (gris >=37 and gris <= 72):
+                    letra_1 = '1'
+                    letra_2 = '!'
+                    #letra += letra_1 + letra_2
+                if (gris >= 73 and gris <= 108):
+                    letra_1 = '2'
+                    letra_2 = '@'
+                    #letra += letra_1 + letra_2
+                if (gris >= 109 and gris <= 144):
+                    letra_1 = '3'
+                    letra_2 = '#'
+                    #letra += letra_1 + letra_2
+                if (gris >= 145 and gris <= 180):
+                    letra_1 = '4'
+                    letra_2 = '$'
+                    #letra += letra_1 + letra_2
+                if (gris >= 181 and gris <= 216):
+                    letra_1 = '5'
+                    letra_2 = '%'
+                    #letra += letra_1 + letra_2
+                if (gris >= 217 and gris <= 255):
+                    letra_1 = '6'
+                    letra_2 = '^'
+                letra += "<font face = 'Las Vegas Black Dominoes'>" + (letra_1 + letra_2)
         return letra
 
 
 
-    def rgb_to_hex(self, r,g,b):
+    def rgb_to_hex(self, r, g, b):
         """
         Convierte un color RGB a Hexadecimal
 
@@ -330,7 +444,7 @@ class filtros():
 
 
 #cp = "descarga.jpg"
-cp="image444.jpg"
+cp="awacatito.jpg"
 im = filtros(cp)
 img = im.obtener_imagen()
 
@@ -339,6 +453,6 @@ img = im.obtener_imagen()
 #    f.write(a)
 #a = im.rgb_to_hex(127, 54, 203)
 #print(a)
-a = im.cartas(img)
+a = im.dominos_html(img)
 with open("output.html", mode="w") as f:
     f.write(a)

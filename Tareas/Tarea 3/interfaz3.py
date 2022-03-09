@@ -5,13 +5,13 @@ from PIL import ImageTk
 import cv2
 import imutils
 import numpy as np
-from filtros import filtros
+from filtros3 import filtros
 
 """
 interfaz grafica
 
 author - Ramses Antonio López Soto
-date - febrero 2022
+date - marzo 2022
 """
 
 def elegir_imagen():
