@@ -356,9 +356,9 @@ class filtros():
                         prom_rojos.append(pixel[2])
                         prom_verdes.append(pixel[1])
                         prom_azules.append(pixel[0])
-                        rojos = self.promedioRGB(prom_rojos)
-                        verdes = self.promedioRGB(prom_verdes)
-                        azules = self.promedioRGB(prom_azules)
+                rojos = self.promedioRGB(prom_rojos)
+                verdes = self.promedioRGB(prom_verdes)
+                azules = self.promedioRGB(prom_azules)
                 img = self.asignarRGB(img, x * w, x * (w + 1), y * z, y * (z + 1), rojos, verdes, azules)
 
         if self.filas % x != 0:
@@ -372,9 +372,9 @@ class filtros():
                         prom_rojos.append(pixel[2])
                         prom_verdes.append(pixel[1])
                         prom_azules.append(pixel[0])
-                        rojos = self.promedioRGB(prom_rojos)
-                        verdes = self.promedioRGB(prom_verdes)
-                        azules = self.promedioRGB(prom_azules)
+                rojos = self.promedioRGB(prom_rojos)
+                verdes = self.promedioRGB(prom_verdes)
+                azules = self.promedioRGB(prom_azules)
                 img = self.asignarRGB(img, x * lw, self.filas, y * w, y * (w + 1), rojos, verdes, azules)
 
         if self.columnas % y != 0:
@@ -388,9 +388,9 @@ class filtros():
                         prom_rojos.append(pixel[2])
                         prom_verdes.append(pixel[1])
                         prom_azules.append(pixel[0])
-                        rojos = self.promedioRGB(prom_rojos)
-                        verdes = self.promedioRGB(prom_verdes)
-                        azules = self.promedioRGB(prom_azules)
+                rojos = self.promedioRGB(prom_rojos)
+                verdes = self.promedioRGB(prom_verdes)
+                azules = self.promedioRGB(prom_azules)
                 img = self.asignarRGB(img, x * w, x * (w + 1), y * lh, self.columnas, rojos, verdes, azules)
 
             prom_rojos = []
@@ -403,9 +403,9 @@ class filtros():
                     prom_rojos.append(pixel[2])
                     prom_verdes.append(pixel[1])
                     prom_azules.append(pixel[0])
-                    rojos = self.promedioRGB(prom_rojos)
-                    verdes = self.promedioRGB(prom_verdes)
-                    azules = self.promedioRGB(prom_azules)
+            rojos = self.promedioRGB(prom_rojos)
+            verdes = self.promedioRGB(prom_verdes)
+            azules = self.promedioRGB(prom_azules)
 
             img = self.asignarRGB(img, x * lw, self.filas, y * lh, self.columnas, rojos, verdes, azules)
 
@@ -445,6 +445,9 @@ class filtros():
         Returns
         promedio de la lista de numeros
         """
+        if len(list) == 0:
+            return 0
+
         promedio = 0
         for p in list:
             promedio += p

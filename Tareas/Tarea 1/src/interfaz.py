@@ -52,6 +52,9 @@ def detec_gris():
     global path_image
     global fil
 
+    if fil == None:
+        error_img()
+
     if selected.get() == 1:
         fil = filtros(path_image)
         img = fil.obtener_imagen()
@@ -138,6 +141,9 @@ def detec_rojo():
     global path_image
     global fil
 
+    if fil == None:
+        error_img()
+
     fil = filtros(path_image)
     img = fil.obtener_imagen()
 
@@ -157,6 +163,9 @@ def detec_verde():
     global image
     global path_image
     global fil
+
+    if fil == None:
+        error_img()
 
     fil = filtros(path_image)
     img = fil.obtener_imagen()
@@ -178,6 +187,9 @@ def detec_azul():
     global path_image
     global fil
 
+    if fil == None:
+        error_img()
+
     fil = filtros(path_image)
     img = fil.obtener_imagen()
 
@@ -197,6 +209,9 @@ def detec_contraste():
     global image
     global path_image
     global fil
+
+    if fil == None:
+        error_img()
 
     fil = filtros(path_image)
     img = fil.obtener_imagen()
@@ -218,6 +233,9 @@ def detec_inverso():
     global path_image
     global fil
 
+    if fil == None:
+        error_img()
+
     fil = filtros(path_image)
     img = fil.obtener_imagen()
 
@@ -237,6 +255,9 @@ def detec_brillo():
     global image
     global path_image
     global fil
+
+    if fil == None:
+        error_img()
 
     fil = filtros(path_image)
     img = fil.obtener_imagen()
@@ -286,13 +307,16 @@ def m_ventana():
     m_label2.pack()
     entry2 = Entry(m_window)
     entry2.pack()
-    btn_m = Button(m_window, text="Aplicar", command=detec_mosaico)
+    btn_m = Button(m_window, text="Aplicar", command=lambda:[detec_mosaico(), m_window.destroy()])
     btn_m.pack()
 
 def detec_mosaico():
     global image
     global path_image
     global fil
+
+    if fil == None:
+        error_img()
 
     fil = filtros(path_image)
     img = fil.obtener_imagen()
@@ -311,7 +335,7 @@ def detec_mosaico():
 
 
 def descargar_imagen(img, filter):
-    cv2.imwrite("result_" + str(filter) + ".png", cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    cv2.imwrite("./output/result_" + str(filter) + ".png", cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
 def cerrar():
     dw = Tk()
@@ -321,6 +345,13 @@ def cerrar():
     btw = Button(dw, text="Cerrar", command=dw.destroy)
     btw.grid(column=0, row=1)
 
+def error_img():
+    dww = Tk()
+    #dw.geometry('50x50')
+    lb = Label(dww, text="ERROR \nEliga una imagen")
+    lb.grid(column=0, row=0)
+    btw = Button(dww, text="Cerrar", command=dww.destroy)
+    btw.grid(column=0, row=1)
 
 image = None
 path_image = None

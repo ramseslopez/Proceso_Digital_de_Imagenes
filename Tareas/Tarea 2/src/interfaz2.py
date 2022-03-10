@@ -53,6 +53,9 @@ def detec_blur():
     global path_image
     global fil
 
+    if fil == None:
+        error_img()
+
     if selected.get() == 1:
         fil = filtros(path_image)
         img = fil.obtener_imagen()
@@ -91,6 +94,9 @@ def detec_motion_blur():
     global path_image
     global fil
 
+    if fil == None:
+        error_img()
+
     fil = filtros(path_image)
     img = fil.obtener_imagen()
 
@@ -124,6 +130,9 @@ def detec_find_edges():
     global image
     global path_image
     global fil
+
+    if fil == None:
+        error_img()
 
     if selected_2.get() == 1:
         fil = filtros(path_image)
@@ -170,6 +179,9 @@ def detec_emboss():
     global path_image
     global fil
 
+    if fil == None:
+        error_img()
+
     if selected_4.get() == 1:
         fil = filtros(path_image)
         img = fil.obtener_imagen()
@@ -199,6 +211,9 @@ def detec_sharpen():
     global image
     global path_image
     global fil
+
+    if fil == None:
+        error_img()
 
     if selected_3.get() == 1:
         fil = filtros(path_image)
@@ -230,6 +245,9 @@ def detec_promedio():
     global path_image
     global fil
 
+    if fil == None:
+        error_img()
+
     fil = filtros(path_image)
     img = fil.obtener_imagen()
 
@@ -249,6 +267,9 @@ def detec_mediana():
     global image
     global path_image
     global fil
+
+    if fil == None:
+        error_img()
 
     fil = filtros(path_image)
     img = fil.obtener_imagen()
@@ -270,6 +291,9 @@ def detec_mica_rgb():
     global path_image
     global fil
     global imageToShowOutput
+
+    if fil == None:
+        error_img()
 
     fil = filtros(path_image)
     img = fil.obtener_imagen()
@@ -328,7 +352,7 @@ def nueva_ventana_4():
     rad3.grid(column=0, row=6)
 
 def descargar_imagen(img, filter):
-    cv2.imwrite("result_" + str(filter) + ".png", cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    cv2.imwrite("./output/result_" + str(filter) + ".png", cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
 
 def cerrar():
@@ -339,7 +363,13 @@ def cerrar():
     btw = Button(dw, text="Cerrar", command=dw.destroy)
     btw.grid(column=0, row=1)
 
-
+def error_img():
+    dww = Tk()
+    #dw.geometry('50x50')
+    lb = Label(dww, text="ERROR \nEliga una imagen")
+    lb.grid(column=0, row=0)
+    btw = Button(dww, text="Cerrar", command=dww.destroy)
+    btw.grid(column=0, row=1)
 
 image = None
 path_image = None
