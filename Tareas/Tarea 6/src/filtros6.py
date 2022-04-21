@@ -36,7 +36,19 @@ class filtros():
     def oleo(self, img):
         return img
 
-    def img_recursiva(self, img, x, y):
+    def img_recursiva_gris(self, img, x, y):
+        """
+        Genera una imagen recursiva en escala
+        de grises imitando un mosaico
+
+        Params
+        img - imagen
+        x - ancho del mosaico
+        y - alto del mosaico
+
+        Returns
+        imagen recursiva en escala de grises
+        """
         g_img = self.gris(img.copy())
         cx = 0
         cy = 0
@@ -50,11 +62,7 @@ class filtros():
                 grays = []
                 for h in range(i, x + i):
                     for k in range(j,  y + j):
-                        #red = g_img[h,k][2]
-                        #green = g_img[h,k][1]
-                        #blue = g_img[h,k][0]
                         grays.append(img[h,k][0])
-                        #reg += 1
 
                 pr = sum(grays) // len(grays)
                 grays.clear()
@@ -197,6 +205,18 @@ class filtros():
         return g_img
 
     def img_recursiva_color(self, img, x, y):
+        """
+        Genera una imagen recursiva a color
+         imitando un mosaico
+
+        Params
+        img - imagen
+        x - ancho del mosaico
+        y - alto del mosaico
+
+        Returns
+        imagen recursiva a color
+        """
         c_img = img.copy()
         cx = 0
         cy = 0
@@ -207,24 +227,22 @@ class filtros():
 
         for i in range(0, self.filas, x):
             for j in range(0, self.columnas, y):
+                reds = []
+                greens = []
+                blues = []
                 for h in range(i, x + i):
                     for k in range(j, y + j):
-                        red = c_img[h, k][2]
-                        green = c_img[h, k][1]
-                        blue = c_img[h, k][0]
-                        reds += red
-                        greens += green
-                        blues += blue
-                        reg += 1
+                        reds.append(c_img[h, k][2])
+                        greens.append(c_img[h, k][1])
+                        blues.append(c_img[h, k][0])
 
-                prom_red = reds // reg
-                prom_green = greens //  reg
-                prom_blue = blues // reg
+                prom_red = sum(reds) // len(reds)
+                prom_green = sum(greens) //  len(greens)
+                prom_blue = sum(blues) // len(blues)
 
-                reds = 0
-                greens = 0
-                blues = 0
-                reg = 0
+                reds.clear()
+                greens.clear()
+                blues.clear()
 
                 s_img = self.mica_RGB(c_img.copy(), prom_red, prom_green, prom_blue)
                 s_img = cv.resize(s_img, (x,y), interpolation = cv.INTER_AREA)
@@ -238,10 +256,17 @@ class filtros():
         return c_img
 
 
-
-
-
     def genera_imgs(self, img):
+        """
+        Genera una lista de imagenes en escala
+        de grises con brillo de distintan intensidad
+
+        Params
+        img - imagen
+
+        Returns
+        lista de imágenes es escala de grises
+        """
         g_img = self.gris(img)
         cont = 0
         gen_imgs = []
@@ -336,7 +361,7 @@ class filtros():
 cp = "image3.png"
 im = filtros(cp)
 img = im.obtener_imagen()
-a = im.img_recursiva(img, 5, 5)
+a = im.img_recursiva_color(img, 5, 5)
 cv.imshow("result", a)
 cv.waitKey()
 cv.imwrite("result.png", a)
