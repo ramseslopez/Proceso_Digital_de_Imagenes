@@ -47,17 +47,17 @@ class filtros():
 
         for i in range(0, self.filas, x):
             for j in range(0, self.columnas, y):
+                grays = []
                 for h in range(i, x + i):
                     for k in range(j,  y + j):
-                        red = g_img[h,k][2]
-                        green = g_img[h,k][1]
-                        blue = g_img[h,k][0]
-                        grays += blue
-                        reg += 1
+                        #red = g_img[h,k][2]
+                        #green = g_img[h,k][1]
+                        #blue = g_img[h,k][0]
+                        grays.append(img[h,k][0])
+                        #reg += 1
 
-                pr = grays // reg
-                grays = 0
-                reg = 0
+                pr = sum(grays) // len(grays)
+                grays.clear()
 
 
                 if pr >= 0 and pr <= 8:
