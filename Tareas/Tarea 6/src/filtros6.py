@@ -33,8 +33,62 @@ class filtros():
         """
         return self.img
 
-    def oleo(self, img):
-        return img
+    def oleo(self, img, rad):
+
+        o_img = img.copy()
+
+        int_c = [0] * 256
+        prom_red = dict()
+        prom_green = dict()
+        prom_blue = dict()
+
+        for i in range(0, self.filas):
+            for j in range(0, self.columnas):
+                max_r = -1
+                max_g = -1
+                max_b = -1
+                for h in range(i, i+rad):
+                    if h >= self.filas:
+                        break
+                    for k in range(j,j+rad):
+                        if k >= self.columnas:
+                            break
+                        red = o_img[h,k][2]
+                        green = o_img[h,k][1]
+                        blue = o_img[h,k][0]
+
+                        if max_r == -1:
+                            max_r = red
+                            max_g = green
+                            max_b = blue
+
+                        if red in prom_red:
+                            prom_red[red] += 1
+                            max_r = max_r if prom_red[max_r] > prom_red[red] else red
+                        else:
+                            prom_red[red] = 1
+
+                        if green in prom_green:
+                            prom_green[green] += 1
+                            max_g = max_g if prom_green[max_g] > prom_green[green] else green
+                        else:
+                            prom_green[green] = 1
+
+                        if blue in prom_blue:
+                            prom_blue[blue] += 1
+                            max_b = max_b if prom_blue[max_b] > prom_blue[blue] else blue
+                        else:
+                            prom_blue[blue] = 1
+
+                o_img[i,j][2] = max_r
+                o_img[i,j][1] = max_g
+                o_img[i,j][0] = max_b
+
+                prom_red.clear()
+                prom_blue.clear()
+                prom_green.clear()
+
+        return o_img
 
     def img_recursiva_gris(self, img, x, y):
         """
@@ -52,8 +106,6 @@ class filtros():
         g_img = self.gris(img.copy())
         cx = 0
         cy = 0
-        grays = 0
-        reg = 0
 
         gen_imgs = self.genera_imgs(img)
 
@@ -358,12 +410,50 @@ class filtros():
                 pixel[2] = red & pixel[2]
         return img
 
-cp = "image3.png"
+    def blur(self, img):
+        m = [
+                    [0, 0, 1, 0, 0],
+                    [0, 1, 1, 1, 0],
+                    [1, 1, 1, 1, 1],
+                    [0, 1, 1, 1, 0],
+                    [0, 0, 1, 0, 0]
+               ]
+        factor = 1.0 / 13.0
+        bias = 0.0
+
+        w = self.filas
+        h = self.columnas
+
+        filter_w = len(m)
+        filter_h = len(m[0])
+
+        img_copy = img.copy()
+
+        for x in range(0, w):
+            for y in range(0, h):
+                red = 0.0
+                green = 0.0
+                blue = 0.0
+                for filter_y in range(0, filter_h):
+                    for filter_x in range(0, filter_w):
+                        img_x = int((x - (filter_w / 2) + filter_y + w) % w)
+                        img_y = int((y - (filter_h / 2) + filter_x + h) % h)
+                        red += img_copy[img_x][img_y][2] * m[filter_y][filter_x]
+                        green += img_copy[img_x][img_y][1] * m[filter_y][filter_x]
+                        blue += img_copy[img_x][img_y][0] * m[filter_y][filter_x]
+                img[x][y][2] = int(min(max(int(factor * red + bias), 0), 255))
+                img[x][y][1] = int(min(max(int(factor * green + bias), 0), 255))
+                img[x][y][0] = int(min(max(int(factor * blue + bias), 0), 255))
+
+        return img
+
+cp = "flores.jpg"
 im = filtros(cp)
 img = im.obtener_imagen()
-a = im.img_recursiva_color(img, 5, 5)
+a = im.oleo(img, 5)
+#a = cv.xphoto.oilPainting(img, 5, 5)
 cv.imshow("result", a)
-cv.waitKey()
+cv.waitKey(0)
 cv.imwrite("result.png", a)
 #x = 0
 #y = 0
