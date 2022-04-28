@@ -2,8 +2,7 @@ import os
 import numpy as np
 import cv2 as cv
 import random
-import time
-from tqdm import tqdm
+import math
 
 class filtros():
     """
@@ -37,7 +36,7 @@ class filtros():
         """
         Aplica un contrate a una imagen en tonos de gris
         """
-        g_img = self.gris(img.copy())
+        g_img = self.gris(img)
         grises = dict()
 
         for i in range(0, self.filas):
@@ -51,30 +50,70 @@ class filtros():
 
         freq_grises = list(grises.values())
 
-        print(freq_grises)
+        mx = max(freq_grises)
+        mn = min(freq_grises)
 
-        freq_grises.sort()
+        max_t = list(grises.keys())[list(grises.values()).index(mx)]
+        min_t = list(grises.keys())[list(grises.values()).index(mn)]
 
-        print(freq_grises)
-
-        max = freq_grises[-1]
-        min = freq_grises[0]
-
-        valor = abs(max - min)
+        valor = abs(float(max_t) - float(min_t))
 
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
-                gris_ = g_img[i, j][2]
+                gris = g_img[i, j][2]
 
-                n_pixel = (gris_ - min // valor) * 255
+                n_pixel = (gris / valor) * 255
+
+                if n_pixel > 255:
+                    n_pixel = 255
+                if n_pixel < 0:
+                    n_pixel = 0
 
                 g_img[i, j][2] = n_pixel
                 g_img[i, j][1] = n_pixel
                 g_img[i, j][0] = n_pixel
 
+
         return g_img
 
 
+    def ecualizar(self, img):
+        g_img = self.gris(img)
+        grises = dict()
+
+        for i in range(0, self.filas):
+            for j in range(0, self.columnas):
+                gris = g_img[i, j][2]
+
+                if gris in grises:
+                    grises[gris] += 1
+                else:
+                    grises[gris] = 1
+
+        freq_grises = list(grises.values())
+
+        cdf_l = self.cdf(freq_grises)
+
+        for i in range(0, self.filas):
+            for j in range(0, self.columnas):
+                gris = g_img[i,j][2]
+
+                n_pixel = round(((cdf_l[gris] - 1) / cdf_l[255]) * 255)
+
+                g_img[i,j][2] = n_pixel
+                g_img[i,j][1] = n_pixel
+                g_img[i,j][0] = n_pixel
+
+        return g_img
+
+
+    def cdf(self, list):
+        list_cdf = [0] * 256
+        list_cdf[0] = list[0]
+        for i in range(1, len(list)):
+            suma = list_cdf[i-1] + list[i]
+            list_cdf[i] = suma
+        return list_cdf
 
 
     def gris(self, img):
@@ -95,9 +134,11 @@ class filtros():
                 pixel[2] = pixel[0]
         return img
 
-cp = "image3.png"
+cp = "Einstein.jpg"
 im = filtros(cp)
 img = im.obtener_imagen()
-a = im.contraste(img)
+a = im.ecualizar(img)
+#print(a)
 cv.imshow("result", a)
 cv.waitKey(0)
+cv.imwrite("result.png", a)
