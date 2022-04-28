@@ -6,6 +6,7 @@ from PIL import ImageTk
 import cv2
 import imutils
 import numpy as np
+from matplotlib import pyplot as plt
 from filtros8 import filtros
 
 """
@@ -50,35 +51,28 @@ def elegir_imagen():
 
 
 
-def nueva_ventana():
-    global entry1
-    new_w = Toplevel(root)
+def histo_m_1():
+    hist = cv2.calcHist([imageToShowOutput_1], [0], None, [256], [0, 256])
+    plt.plot(hist, color='gray' )
 
-    lb1 = Label(new_w, text="Tamaño")
-    lb1.pack()
-    entry1 = Entry(new_w, text="radio")
-    entry1.pack()
-    bc1 = Button(new_w, text='Procesar', command=lambda:[detec_pintura_gris(), new_w.destroy()])
-    bc1.pack()
+    plt.xlabel('intensidad')
+    plt.ylabel('pixeles')
+    plt.show()
 
+def histo_m_2():
+    hist = cv2.calcHist([imageToShowOutput_2], [0], None, [256], [0, 256])
+    plt.plot(hist, color='gray' )
 
-
-def nueva_ventana_2():
-    global entry2
-    new_ww = Toplevel(root)
-
-    lb2 = Label(new_ww, text="Tamaño")
-    lb2.pack()
-    entry2 = Entry(new_ww, text="radio")
-    entry2.pack()
-    bc2 = Button(new_ww, text='Procesar', command=lambda:[detec_pintura_color(), new_ww.destroy()])
-    bc2.pack()
+    plt.xlabel('intensidad')
+    plt.ylabel('pixeles')
+    plt.show()
 
 
-def detec_pintura_gris():
+def detec_contraste():
     global image
     global path_image
     global fil
+    global imageToShowOutput_1
 
     if fil == None:
         error_img()
@@ -86,48 +80,68 @@ def detec_pintura_gris():
 
     fil = filtros(path_image)
     img = fil.obtener_imagen()
-    imagen = fil.oleo_gris(img, int(entry1.get()))
+    imagen = fil.contraste(img)
 
-    imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
-    im = Image.fromarray(imageToShowOutput)
+    imageToShowOutput_1 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
+    im = Image.fromarray(imageToShowOutput_1)
     img = ImageTk.PhotoImage(image=im)
     lblOutputImage.configure(image=img)
     lblOutputImage.image = img
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
-    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "oil_gray"), cerrar()])
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_1, "contrast"), cerrar()])
     dw_btn.grid(column=2, row=0, padx=5, pady=5)
+    hist_btn = Button(root, text="Histograma", command=histo_m_1)
+    hist_btn.grid(column=2, row=1, padx=5, pady=5)
 
 
-def detec_pintura_color():
+def detec_ecualizar():
     global image
     global path_image
     global fil
-
+    global imageToShowOutput_2
     if fil == None:
         error_img()
 
 
     fil = filtros(path_image)
     img = fil.obtener_imagen()
-    imagen = fil.oleo(img, int(entry2.get()))
+    imagen = fil.ecualizar(img)
 
-    imageToShowOutput = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
-    im = Image.fromarray(imageToShowOutput)
+    imageToShowOutput_2 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
+    im = Image.fromarray(imageToShowOutput_2)
     img = ImageTk.PhotoImage(image=im)
     lblOutputImage.configure(image=img)
     lblOutputImage.image = img
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
-    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput, "oil_color"), cerrar()])
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_2, "equalz"), cerrar()])
     dw_btn.grid(column=2, row=0, padx=5, pady=5)
+    hist_btn = Button(root, text="Histograma", command=histo_m_1)
+    hist_btn.grid(column=2, row=1, padx=5, pady=5)
 
 
 
 def descargar_imagen(img, filter):
     cv2.imwrite("./output/result_" + str(filter) + ".png", cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+
+def histo():
+    global image
+    global path_image
+    global fil
+
+    if fil == None:
+        error_img()
+
+    hist = cv2.calcHist([image], [0], None, [256], [0, 256])
+    plt.plot(hist, color='gray' )
+
+    plt.xlabel('iluminacion')
+    plt.ylabel('pixeles')
+    plt.show()
+
 
 
 def cerrar():
@@ -152,7 +166,7 @@ fil = None
 
 # ventana principal
 root = Tk()
-root.title("Tarea 7")
+root.title("Tarea 8")
 
 # se muestra la imagen de entrada
 lblInputImage = Label(root)
@@ -166,11 +180,13 @@ lblInfo2 = Label(root, text= "¿Que filtro deseas probar?")
 lblInfo2.grid(column=0, row=3, padx=5, pady=5)
 
 
-fil_btn_1 = Button(root, text= "Pintura Gris", width=25, command=nueva_ventana)
-fil_btn_2 = Button(root, text= "Pintura Color", width=25, command=nueva_ventana_2)
+fil_btn_1 = Button(root, text= "Contraste", width=25, command=detec_contraste)
+fil_btn_2 = Button(root, text= "Ecualizar", width=25, command=detec_ecualizar)
+fil_btn_3 = Button(root, text= "Histograma Original", width=25, command=histo)
 
 fil_btn_1.grid(column=0, row=4, padx=5,pady=5)
 fil_btn_2.grid(column=0, row=5, padx=5,pady=5)
+fil_btn_3.grid(column=0, row=6, padx=5,pady=5)
 
 # boton para elegir la imagen
 btn = Button(root, text="Elegir imagen", width=25, command=elegir_imagen)

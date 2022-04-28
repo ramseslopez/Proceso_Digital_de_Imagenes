@@ -29,12 +29,21 @@ class filtros():
     def obtener_imagen(self):
         """
         Devuelve la imagen
+
+        Returns
+        imagen
         """
         return self.img
 
     def contraste(self, img):
         """
-        Aplica un contrate a una imagen en tonos de gris
+        Aplica un contraste a una imagen en tonos de gris
+
+        Params
+        img - imagen
+
+        Returns
+        imagen modificada
         """
         g_img = self.gris(img)
         grises = dict()
@@ -73,11 +82,19 @@ class filtros():
                 g_img[i, j][1] = n_pixel
                 g_img[i, j][0] = n_pixel
 
-
         return g_img
 
 
     def ecualizar(self, img):
+        """
+        Aplica una ecualización a una imagen en tonos de gris
+
+        Params
+        img - imagen
+
+        Returns
+        imagen modificada
+        """
         g_img = self.gris(img)
         grises = dict()
 
@@ -92,7 +109,11 @@ class filtros():
 
         freq_grises = list(grises.values())
 
-        cdf_l = self.cdf(freq_grises)
+        cdf_l = [0] * 256
+        cdf_l[0] = freq_grises[0]
+        for f in range(1, len(freq_grises)):
+            suma = cdf_l[f - 1] + freq_grises[f]
+            cdf_l[f] = suma
 
         for i in range(0, self.filas):
             for j in range(0, self.columnas):
@@ -105,15 +126,6 @@ class filtros():
                 g_img[i,j][0] = n_pixel
 
         return g_img
-
-
-    def cdf(self, list):
-        list_cdf = [0] * 256
-        list_cdf[0] = list[0]
-        for i in range(1, len(list)):
-            suma = list_cdf[i-1] + list[i]
-            list_cdf[i] = suma
-        return list_cdf
 
 
     def gris(self, img):
@@ -133,12 +145,3 @@ class filtros():
                 pixel[1] = pixel[0]
                 pixel[2] = pixel[0]
         return img
-
-cp = "Einstein.jpg"
-im = filtros(cp)
-img = im.obtener_imagen()
-a = im.ecualizar(img)
-#print(a)
-cv.imshow("result", a)
-cv.waitKey(0)
-cv.imwrite("result.png", a)
