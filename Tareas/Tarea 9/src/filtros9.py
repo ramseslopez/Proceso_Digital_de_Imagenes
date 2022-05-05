@@ -10,7 +10,7 @@ class filtros():
 
     author - Ramses Antonio López Soto
                   315319974
-    date - abril 2022
+    date - mayo 2022
     """
 
     def __init__(self, ruta_imagen):
@@ -37,6 +37,16 @@ class filtros():
 
 
     def disp_dithering_3x3(self, img):
+        """
+        Aplica el filtro de dithering
+        disperso de una matriz de 3x3
+
+        Params
+        img - imagen
+
+        Returns
+        imagen modificada
+        """
         g_img = self.gris(img.copy())
 
         m = [   [1, 7, 4],
@@ -61,6 +71,16 @@ class filtros():
         return g_img
 
     def disp_dithering_2x2(self, img):
+        """
+        Aplica el filtro de dithering
+        disperso de una matriz de 2x2
+
+        Params
+        img - imagen
+
+        Returns
+        imagen modificada
+        """
         g_img = self.gris(img.copy())
 
         m = [   [4, 1],
@@ -84,6 +104,16 @@ class filtros():
         return g_img
 
     def disp_dithering_4x4(self, img):
+        """
+        Aplica el filtro de dithering
+        disperso de una matriz de 4x4
+
+        Params
+        img - imagen
+
+        Returns
+        imagen modificada
+        """
         g_img = self.gris(img.copy())
 
         m = [   [16, 4, 13, 1],
@@ -110,6 +140,16 @@ class filtros():
 
 
     def ord_dithering(self, img):
+        """
+        Aplica el filtro de dithering
+        ordenado de una matriz de 3x3
+
+        Params
+        img - imagen
+
+        Returns
+        imagen modificada
+        """
         g_img = self.gris(img.copy())
         m = [   [8, 3, 4],
                    [6, 1, 3],
@@ -134,6 +174,16 @@ class filtros():
 
 
     def random_dithering(self, img):
+        """
+        Aplica el filtro de dithering
+        aleatorio
+
+        Params
+        img - imagen
+
+        Returns
+        imagen modificada
+        """
         g_img = self.gris(img.copy())
 
         for i in range(0, self.filas):
@@ -169,11 +219,3 @@ class filtros():
                 pixel[1] = pixel[0]
                 pixel[2] = pixel[0]
         return img
-
-cp = "IlseFoto01-gris.jpg"
-im = filtros(cp)
-img = im.obtener_imagen()
-a = im.disp_dithering_2x2(img)
-cv.imshow("result", a)
-cv.waitKey(0)
-cv.imwrite("result.png", a)

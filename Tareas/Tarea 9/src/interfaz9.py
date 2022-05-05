@@ -7,13 +7,15 @@ import cv2
 import imutils
 import numpy as np
 from matplotlib import pyplot as plt
+import os
+import errno
 from filtros9 import filtros
 
 """
 interfaz grafica
 
 author - Ramses Antonio López Soto
-date - abril 2022
+date - mayo 2022
 """
 
 def elegir_imagen():
@@ -50,29 +52,10 @@ def elegir_imagen():
         lblInfo1.grid(column=0,row=1, padx=5, pady=5)
 
 
-
-def histo_m_1():
-    hist = cv2.calcHist([imageToShowOutput_1], [0], None, [256], [0, 256])
-    plt.plot(hist, color='gray' )
-
-    plt.xlabel('intensidad')
-    plt.ylabel('pixeles')
-    plt.show()
-
-def histo_m_2():
-    hist = cv2.calcHist([imageToShowOutput_2], [0], None, [256], [0, 256])
-    plt.plot(hist, color='gray' )
-
-    plt.xlabel('intensidad')
-    plt.ylabel('pixeles')
-    plt.show()
-
-
-def detec_contraste():
+def detec_ditering_ord():
     global image
     global path_image
     global fil
-    global imageToShowOutput_1
 
     if fil == None:
         error_img()
@@ -80,7 +63,7 @@ def detec_contraste():
 
     fil = filtros(path_image)
     img = fil.obtener_imagen()
-    imagen = fil.contraste(img)
+    imagen = fil.ord_dithering(img)
 
     imageToShowOutput_1 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
     im = Image.fromarray(imageToShowOutput_1)
@@ -90,44 +73,34 @@ def detec_contraste():
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
-    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_1, "contrast"), cerrar()])
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_1, "dit_ord"), cerrar()])
     dw_btn.grid(column=2, row=0, padx=5, pady=5)
-    hist_btn = Button(root, text="Histograma", command=histo_m_1)
-    hist_btn.grid(column=2, row=1, padx=5, pady=5)
 
-
-def detec_ecualizar():
+def detec_ditering_rnd():
     global image
     global path_image
     global fil
-    global imageToShowOutput_2
+
     if fil == None:
         error_img()
 
 
     fil = filtros(path_image)
     img = fil.obtener_imagen()
-    imagen = fil.ecualizar(img)
+    imagen = fil.random_dithering(img)
 
-    imageToShowOutput_2 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
-    im = Image.fromarray(imageToShowOutput_2)
+    imageToShowOutput_1 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
+    im = Image.fromarray(imageToShowOutput_1)
     img = ImageTk.PhotoImage(image=im)
     lblOutputImage.configure(image=img)
     lblOutputImage.image = img
 
     lblInfo3 = Label(root, text = "Modificada")
     lblInfo3.grid(column=1, row=0, padx=5,pady=5)
-    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_2, "equalz"), cerrar()])
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_1, "dit_rnd"), cerrar()])
     dw_btn.grid(column=2, row=0, padx=5, pady=5)
-    hist_btn = Button(root, text="Histograma", command=histo_m_1)
-    hist_btn.grid(column=2, row=1, padx=5, pady=5)
 
-
-
-def descargar_imagen(img, filter):
-    cv2.imwrite("./output/result_" + str(filter) + ".png", cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-
-def histo():
+def detec_ditering_disp_3x3():
     global image
     global path_image
     global fil
@@ -135,14 +108,73 @@ def histo():
     if fil == None:
         error_img()
 
-    hist = cv2.calcHist([image], [0], None, [256], [0, 256])
-    plt.plot(hist, color='gray' )
 
-    plt.xlabel('iluminacion')
-    plt.ylabel('pixeles')
-    plt.show()
+    fil = filtros(path_image)
+    img = fil.obtener_imagen()
+    imagen = fil.disp_dithering_3x3(img)
+
+    imageToShowOutput_1 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
+    im = Image.fromarray(imageToShowOutput_1)
+    img = ImageTk.PhotoImage(image=im)
+    lblOutputImage.configure(image=img)
+    lblOutputImage.image = img
+
+    lblInfo3 = Label(root, text = "Modificada")
+    lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_1, "dit_disp_3x3"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
+
+def detec_ditering_disp_2x2():
+    global image
+    global path_image
+    global fil
+
+    if fil == None:
+        error_img()
 
 
+    fil = filtros(path_image)
+    img = fil.obtener_imagen()
+    imagen = fil.disp_dithering_2x2(img)
+
+    imageToShowOutput_1 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
+    im = Image.fromarray(imageToShowOutput_1)
+    img = ImageTk.PhotoImage(image=im)
+    lblOutputImage.configure(image=img)
+    lblOutputImage.image = img
+
+    lblInfo3 = Label(root, text = "Modificada")
+    lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_1, "dit_disp_2x2"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
+
+def detec_ditering_disp_4x4():
+    global image
+    global path_image
+    global fil
+
+    if fil == None:
+        error_img()
+
+
+    fil = filtros(path_image)
+    img = fil.obtener_imagen()
+    imagen = fil.disp_dithering_4x4(img)
+
+    imageToShowOutput_1 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
+    im = Image.fromarray(imageToShowOutput_1)
+    img = ImageTk.PhotoImage(image=im)
+    lblOutputImage.configure(image=img)
+    lblOutputImage.image = img
+
+    lblInfo3 = Label(root, text = "Modificada")
+    lblInfo3.grid(column=1, row=0, padx=5,pady=5)
+    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_1, "dit_disp_4x4"), cerrar()])
+    dw_btn.grid(column=2, row=0, padx=5, pady=5)
+
+
+def descargar_imagen(img, filter):
+    cv2.imwrite("./output/result_" + str(filter) + ".png", cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 
 def cerrar():
     dw = Tk()
@@ -166,7 +198,7 @@ fil = None
 
 # ventana principal
 root = Tk()
-root.title("Tarea 8")
+root.title("Tarea 9")
 
 # se muestra la imagen de entrada
 lblInputImage = Label(root)
@@ -180,18 +212,26 @@ lblInfo2 = Label(root, text= "¿Que filtro deseas probar?")
 lblInfo2.grid(column=0, row=3, padx=5, pady=5)
 
 
-fil_btn_1 = Button(root, text= "Contraste", width=25, command=detec_contraste)
-fil_btn_2 = Button(root, text= "Ecualizar", width=25, command=detec_ecualizar)
-fil_btn_3 = Button(root, text= "Histograma Original", width=25, command=histo)
+fil_btn_1 = Button(root, text= "Dithering Random", width=25, command=detec_ditering_rnd)
+fil_btn_2 = Button(root, text= "Dithering Ordenada", width=25, command=detec_ditering_ord)
+fil_btn_3 = Button(root, text= "Dithering Disperso 3x3", width=25, command=detec_ditering_disp_3x3)
+fil_btn_4 = Button(root, text= "Dithering Disperso 2x2", width=25, command=detec_ditering_disp_2x2)
+fil_btn_5 = Button(root, text= "Dithering Disperso 4x4", width=25, command=detec_ditering_disp_4x4)
 
 fil_btn_1.grid(column=0, row=4, padx=5,pady=5)
 fil_btn_2.grid(column=0, row=5, padx=5,pady=5)
 fil_btn_3.grid(column=0, row=6, padx=5,pady=5)
+fil_btn_4.grid(column=0, row=7, padx=5,pady=5)
+fil_btn_5.grid(column=0, row=8, padx=5,pady=5)
 
 # boton para elegir la imagen
 btn = Button(root, text="Elegir imagen", width=25, command=elegir_imagen)
 btn.grid(column=0, row=0, padx=5,pady=5)
 
 
-
+try:
+    os.mkdir('dir1')
+except OSError as e:
+    if e.errno != errno.EEXIST:
+        raise
 root.mainloop()
