@@ -9,7 +9,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import os
 import errno
-from filtros9 import filtros
+from filtros10 import filtros
 
 """
 interfaz grafica
@@ -52,7 +52,7 @@ def elegir_imagen():
         lblInfo1.grid(column=0,row=1, padx=5, pady=5)
 
 
-def detec_ditering_ord():
+def detec_fm():
     global image
     global path_image
     global fil
@@ -63,7 +63,7 @@ def detec_ditering_ord():
 
     fil = filtros(path_image)
     img = fil.obtener_imagen()
-    imagen = fil.ord_dithering(img)
+    imagen = fil.fotomosaico(img, int(entry1.get()), int(entry2.get()))
 
     imageToShowOutput_1 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
     im = Image.fromarray(imageToShowOutput_1)
@@ -76,101 +76,21 @@ def detec_ditering_ord():
     dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_1, "dit_ord"), cerrar()])
     dw_btn.grid(column=2, row=0, padx=5, pady=5)
 
-def detec_ditering_rnd():
-    global image
-    global path_image
-    global fil
+def n_wed():
+    global entry1
+    global entry2
 
-    if fil == None:
-        error_img()
-
-
-    fil = filtros(path_image)
-    img = fil.obtener_imagen()
-    imagen = fil.random_dithering(img)
-
-    imageToShowOutput_1 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
-    im = Image.fromarray(imageToShowOutput_1)
-    img = ImageTk.PhotoImage(image=im)
-    lblOutputImage.configure(image=img)
-    lblOutputImage.image = img
-
-    lblInfo3 = Label(root, text = "Modificada")
-    lblInfo3.grid(column=1, row=0, padx=5,pady=5)
-    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_1, "dit_rnd"), cerrar()])
-    dw_btn.grid(column=2, row=0, padx=5, pady=5)
-
-def detec_ditering_disp_3x3():
-    global image
-    global path_image
-    global fil
-
-    if fil == None:
-        error_img()
-
-
-    fil = filtros(path_image)
-    img = fil.obtener_imagen()
-    imagen = fil.disp_dithering_3x3(img)
-
-    imageToShowOutput_1 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
-    im = Image.fromarray(imageToShowOutput_1)
-    img = ImageTk.PhotoImage(image=im)
-    lblOutputImage.configure(image=img)
-    lblOutputImage.image = img
-
-    lblInfo3 = Label(root, text = "Modificada")
-    lblInfo3.grid(column=1, row=0, padx=5,pady=5)
-    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_1, "dit_disp_3x3"), cerrar()])
-    dw_btn.grid(column=2, row=0, padx=5, pady=5)
-
-def detec_ditering_disp_2x2():
-    global image
-    global path_image
-    global fil
-
-    if fil == None:
-        error_img()
-
-
-    fil = filtros(path_image)
-    img = fil.obtener_imagen()
-    imagen = fil.disp_dithering_2x2(img)
-
-    imageToShowOutput_1 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
-    im = Image.fromarray(imageToShowOutput_1)
-    img = ImageTk.PhotoImage(image=im)
-    lblOutputImage.configure(image=img)
-    lblOutputImage.image = img
-
-    lblInfo3 = Label(root, text = "Modificada")
-    lblInfo3.grid(column=1, row=0, padx=5,pady=5)
-    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_1, "dit_disp_2x2"), cerrar()])
-    dw_btn.grid(column=2, row=0, padx=5, pady=5)
-
-def detec_ditering_disp_4x4():
-    global image
-    global path_image
-    global fil
-
-    if fil == None:
-        error_img()
-
-
-    fil = filtros(path_image)
-    img = fil.obtener_imagen()
-    imagen = fil.disp_dithering_4x4(img)
-
-    imageToShowOutput_1 = cv2.cvtColor(imagen, cv2.COLOR_BGR2RGB)
-    im = Image.fromarray(imageToShowOutput_1)
-    img = ImageTk.PhotoImage(image=im)
-    lblOutputImage.configure(image=img)
-    lblOutputImage.image = img
-
-    lblInfo3 = Label(root, text = "Modificada")
-    lblInfo3.grid(column=1, row=0, padx=5,pady=5)
-    dw_btn = Button(root, text="Descargar", command=lambda:[descargar_imagen(imageToShowOutput_1, "dit_disp_4x4"), cerrar()])
-    dw_btn.grid(column=2, row=0, padx=5, pady=5)
+    m_window = Toplevel(root)
+    m_label1 = Label(m_window, text="ancho")
+    m_label1.pack()
+    entry1 = Entry(m_window)
+    entry1.pack()
+    m_label2 = Label(m_window, text="alto")
+    m_label2.pack()
+    entry2 = Entry(m_window)
+    entry2.pack()
+    btn_m = Button(m_window, text="Aplicar", command=lambda:[detec_fm(), m_window.destroy()])
+    btn_m.pack()
 
 
 def descargar_imagen(img, filter):
@@ -198,7 +118,7 @@ fil = None
 
 # ventana principal
 root = Tk()
-root.title("Tarea 9")
+root.title("Tarea 10")
 
 # se muestra la imagen de entrada
 lblInputImage = Label(root)
@@ -212,17 +132,9 @@ lblInfo2 = Label(root, text= "¿Que filtro deseas probar?")
 lblInfo2.grid(column=0, row=3, padx=5, pady=5)
 
 
-fil_btn_1 = Button(root, text= "Dithering Random", width=25, command=detec_ditering_rnd)
-fil_btn_2 = Button(root, text= "Dithering Ordenada", width=25, command=detec_ditering_ord)
-fil_btn_3 = Button(root, text= "Dithering Disperso 3x3", width=25, command=detec_ditering_disp_3x3)
-fil_btn_4 = Button(root, text= "Dithering Disperso 2x2", width=25, command=detec_ditering_disp_2x2)
-fil_btn_5 = Button(root, text= "Dithering Disperso 4x4", width=25, command=detec_ditering_disp_4x4)
+fil_btn_1 = Button(root, text= "FM", width=25, command=n_wed)
 
 fil_btn_1.grid(column=0, row=4, padx=5,pady=5)
-fil_btn_2.grid(column=0, row=5, padx=5,pady=5)
-fil_btn_3.grid(column=0, row=6, padx=5,pady=5)
-fil_btn_4.grid(column=0, row=7, padx=5,pady=5)
-fil_btn_5.grid(column=0, row=8, padx=5,pady=5)
 
 # boton para elegir la imagen
 btn = Button(root, text="Elegir imagen", width=25, command=elegir_imagen)

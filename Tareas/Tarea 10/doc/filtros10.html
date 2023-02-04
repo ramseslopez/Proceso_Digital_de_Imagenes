@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module filtros10</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>filtros10</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cvirus%5Conedrive%5Cdocumentos%5Cproceso_digital_de_imagenes%5Ctareas%5Ctarea%2010%5Csrc%5Cfiltros10.py">c:\users\virus\onedrive\documentos\proceso_digital_de_imagenes\tareas\tarea 10\src\filtros10.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="cv2.html">cv2</a><br>
+<a href="glob.html">glob</a><br>
+</td><td width="25%" valign=top><a href="math.html">math</a><br>
+<a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+<a href="random.html">random</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="filtros10.html#filtros">filtros</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="filtros">class <strong>filtros</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#filtros">filtros</a>(ruta_imagen)<br>
+&nbsp;<br>
+Clase&nbsp;de&nbsp;<a href="#filtros">filtros</a>&nbsp;de&nbsp;convolucion&nbsp;para&nbsp;imagenes<br>
+&nbsp;<br>
+author&nbsp;-&nbsp;Ramses&nbsp;Antonio&nbsp;López&nbsp;Soto<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;315319974<br>
+date&nbsp;-&nbsp;mayo&nbsp;2022<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="filtros-__init__"><strong>__init__</strong></a>(self, ruta_imagen)</dt><dd><tt>Inicializa&nbsp;las&nbsp;variables<br>
+a&nbsp;utilizar<br>
+&nbsp;<br>
+Params<br>
+ruta_imagen&nbsp;-&nbsp;localizacion&nbsp;de&nbsp;la&nbsp;imagen</tt></dd></dl>
+
+<dl><dt><a name="filtros-elegir_imagen"><strong>elegir_imagen</strong></a>(self, lst, r, g, b)</dt><dd><tt>Metodo&nbsp;que&nbsp;se&nbsp;encarga&nbsp;de&nbsp;elegir<br>
+una&nbsp;imagen&nbsp;parecida&nbsp;al&nbsp;color&nbsp;rgb<br>
+&nbsp;<br>
+Params<br>
+lst&nbsp;-&nbsp;lista&nbsp;de&nbsp;imagenes<br>
+r&nbsp;-&nbsp;color&nbsp;rojo&nbsp;promedio<br>
+g&nbsp;-&nbsp;color&nbsp;verde&nbsp;promedio<br>
+b&nbsp;-&nbsp;color&nbsp;azul&nbsp;promedio</tt></dd></dl>
+
+<dl><dt><a name="filtros-euclidiana"><strong>euclidiana</strong></a>(self, r1, g1, b1, r2, g2, b2)</dt><dd><tt>Calculata&nbsp;la&nbsp;euclidiana&nbsp;de&nbsp;dos&nbsp;pixeles<br>
+&nbsp;<br>
+Params<br>
+r1&nbsp;-&nbsp;color&nbsp;rojo<br>
+r2&nbsp;-&nbsp;color&nbsp;rojo<br>
+g1&nbsp;-&nbsp;color&nbsp;verde<br>
+g2&nbsp;-&nbsp;color&nbsp;verde<br>
+b1&nbsp;-&nbsp;color&nbsp;azul<br>
+b2&nbsp;-&nbsp;color&nbsp;azul<br>
+&nbsp;<br>
+Returns<br>
+valor&nbsp;de&nbsp;la&nbsp;euclidiana</tt></dd></dl>
+
+<dl><dt><a name="filtros-fotomosaico"><strong>fotomosaico</strong></a>(self, img, x, y)</dt><dd><tt>Realiza&nbsp;el&nbsp;fotomosaico&nbsp;de&nbsp;la&nbsp;imagen<br>
+&nbsp;<br>
+Params<br>
+img&nbsp;-&nbsp;imagen&nbsp;a&nbsp;manipular<br>
+x&nbsp;-&nbsp;base&nbsp;del&nbsp;mosaico<br>
+y&nbsp;-&nbsp;altura&nbsp;del&nbsp;mosaico<br>
+&nbsp;<br>
+Returns<br>
+imagen&nbsp;modificada</tt></dd></dl>
+
+<dl><dt><a name="filtros-obtener_imagen"><strong>obtener_imagen</strong></a>(self)</dt><dd><tt>Devuelve&nbsp;la&nbsp;imagen<br>
+&nbsp;<br>
+Returns<br>
+imagen</tt></dd></dl>
+
+<dl><dt><a name="filtros-obtener_imagenes"><strong>obtener_imagenes</strong></a>(self)</dt><dd><tt>Metodo&nbsp;que&nbsp;se&nbsp;encarga&nbsp;de&nbsp;recopilar<br>
+las&nbsp;imagenes<br>
+&nbsp;<br>
+Returns<br>
+Lista&nbsp;de&nbsp;imagenes</tt></dd></dl>
+
+<dl><dt><a name="filtros-prom_imagen"><strong>prom_imagen</strong></a>(self, imgg)</dt><dd><tt>Se&nbsp;encarga&nbsp;de&nbsp;obtener&nbsp;el&nbsp;color&nbsp;promedio<br>
+de&nbsp;una&nbsp;region<br>
+&nbsp;<br>
+Params<br>
+imgg&nbsp;-&nbsp;imagen&nbsp;<br>
+&nbsp;<br>
+Return<br>
+Lista&nbsp;con&nbsp;el&nbsp;color&nbsp;promedio</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>
